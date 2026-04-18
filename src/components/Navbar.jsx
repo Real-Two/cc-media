@@ -47,7 +47,7 @@ export default function Navbar() {
             </svg>
           </div>
           <span className="font-heading text-[18px] md:text-[20px] font-bold tracking-[0.15em] text-text">
-            COLLABCELL
+            COLLABCELL MEDIA
           </span>
         </Link>
 

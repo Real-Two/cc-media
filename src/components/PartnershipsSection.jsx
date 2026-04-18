@@ -65,7 +65,7 @@ export default function PartnershipsSection() {
                   className="font-heading font-bold text-text group-hover:translate-x-4 transition-transform duration-500"
                   style={{ fontSize: 'clamp(28px, 4vw, 56px)' }}
                 >
-                  CollabCell{' '}
+                  CollabCell Media{' '}
                   <span className="text-accent opacity-50 font-body font-light mx-2">
                     ×
                   </span>{' '}

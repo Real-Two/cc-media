@@ -41,7 +41,7 @@ export default function Footer() {
                 </svg>
               </div>
               <span className="font-heading text-[18px] font-bold tracking-[0.15em] text-text">
-                COLLABCELL
+                COLLABCELL MEDIA
               </span>
             </div>
             <p className="font-body text-text-muted text-[15px] leading-[1.7] max-w-[300px] font-light">
