@@ -1,0 +1,248 @@
+@import "tailwindcss";
+
+/* ─── Custom Theme ─── */
+@theme {
+  --color-bg: #FAFAFA;
+  --color-bg-light: #FFFFFF;
+  --color-bg-card: #FFFFFF;
+  --color-text: #111111;
+  --color-text-muted: #666666;
+  --color-border: rgba(0, 0, 0, 0.08);
+
+  --color-accent: #FF5A5F;
+  --color-accent-light: #FF7A7E;
+  --color-accent-dark: #E0484D;
+
+  /* Legacy mappings */
+  --color-teal: #4ECDC4;
+  --color-lime: #FFE66D;
+  --color-deep-blue: #1A535C;
+  --color-purple: #FF5A5F;
+  --color-magenta: #FF7A7E;
+
+  --font-heading: 'Cabinet Grotesk', sans-serif;
+  --font-body: 'Satoshi', sans-serif;
+  --font-display: 'Phudu', cursive;
+  --font-serif: 'Playfair Display', serif;
+}
+
+/* ─── Base ─── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scroll Snap Container ─── */
+.snap-container {
+  scroll-snap-type: y mandatory;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .snap-container {
+    scroll-snap-type: y proximity;
+  }
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+}
+
+/* ─── Gradient Text ─── */
+.gradient-text {
+  background: linear-gradient(135deg, #111111, #888888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.accent-text {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Gradient Button ─── */
+.gradient-btn {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-dark));
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 90, 95, 0.3);
+}
+
+.gradient-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(255, 90, 95, 0.4);
+}
+
+/* ─── Ghost Button ─── */
+.ghost-btn {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #111111;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.ghost-btn:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+  background: #FAFAFA;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* ─── Marquee ─── */
+.marquee-track {
+  display: flex;
+  animation: marquee 22s linear infinite;
+  width: max-content;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ─── Colorful Animated Background Orbs ─── */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb-teal {
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(255, 90, 95, 0.15) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: orbDrift1 20s ease-in-out infinite alternate;
+}
+
+.orb-purple {
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(78, 205, 196, 0.15) 0%, transparent 70%);
+  filter: blur(90px);
+  animation: orbDrift2 25s ease-in-out infinite alternate;
+}
+
+.orb-magenta {
+  display: block;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 230, 109, 0.15) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: orbDrift3 22s ease-in-out infinite alternate;
+}
+
+@keyframes orbDrift1 {
+  0% { transform: translate(-20%, -10%); }
+  100% { transform: translate(15%, 20%); }
+}
+
+@keyframes orbDrift2 {
+  0% { transform: translate(30%, -20%); }
+  100% { transform: translate(-10%, 15%); }
+}
+
+@keyframes orbDrift3 {
+  0% { transform: translate(10%, 30%); }
+  100% { transform: translate(-25%, -5%); }
+}
+
+/* ─── Pulsing Dot ─── */
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4); }
+  50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 10px 4px rgba(124, 58, 237, 0); }
+}
+
+/* ─── Card Glow & Shadows ─── */
+.card-glow-teal:hover, .card-glow-magenta:hover, .hover-card {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.12);
+  background: #FFFFFF;
+}
+
+/* ─── Partnership Hover ─── */
+.partnership-line {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.partnership-line:hover {
+  color: var(--color-accent);
+  transform: translateX(10px);
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: rgba(255, 90, 95, 0.2);
+  color: #111;
+}
+
+/* ─── Abstract Shape Visuals ─── */
+.abstract-shape {
+  background: #111111;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.abstract-shape::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 40%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+}
