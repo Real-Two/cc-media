@@ -35,11 +35,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-12 md:gap-8 mb-12">
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent via-accent-light to-teal flex items-center justify-center shadow-md">
-                <svg width="12" height="14" viewBox="0 0 14 16" fill="none">
-                  <path d="M13 8L1 15V1L13 8Z" fill="white" />
-                </svg>
-              </div>
+              <img src="/logo.png" alt="CollabCell Media" className="w-10 h-10 object-contain" />
               <span className="font-heading text-[18px] font-bold tracking-[0.15em] text-text">
                 COLLABCELL MEDIA
               </span>

@@ -41,11 +41,7 @@ export default function Navbar() {
       <div className="max-w-[1400px] mx-auto flex items-center justify-between px-6 md:px-12 py-5 w-full">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 no-underline">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent via-accent-light to-teal flex items-center justify-center shadow-lg">
-            <svg width="14" height="16" viewBox="0 0 14 16" fill="none">
-              <path d="M13 8L1 15V1L13 8Z" fill="white" />
-            </svg>
-          </div>
+          <img src="/logo.png" alt="CollabCell Media" className="w-10 h-10 object-contain" />
           <span className="font-heading text-[18px] md:text-[20px] font-bold tracking-[0.15em] text-text">
             COLLABCELL MEDIA
           </span>
