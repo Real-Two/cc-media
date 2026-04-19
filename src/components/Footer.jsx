@@ -24,8 +24,8 @@ const links = [
 
 const socials = [
   { icon: InstagramIcon, href: 'https://instagram.com/collabcellmedia', label: 'Instagram' },
-  { icon: WhatsAppIcon, href: 'https://wa.me/919999999999', label: 'WhatsApp' },
-  { icon: () => <Mail size={16} />, href: 'mailto:hello@collabcellmedia.com', label: 'Email' },
+  { icon: WhatsAppIcon, href: 'https://wa.me/919506822030', label: 'WhatsApp' },
+  { icon: () => <Mail size={16} />, href: 'mailto:collabcellmedia@gmail.com', label: 'Email' },
 ]
 
 export default function Footer() {
@@ -56,7 +56,7 @@ export default function Footer() {
           </div>
           <div>
             <p className="font-heading text-[13px] tracking-[0.2em] text-text font-semibold uppercase mb-6">Connect</p>
-            <div className="flex gap-4">
+            <div className="flex gap-4 mb-6">
               {socials.map(({ icon: Icon, href, label }) => (
                 <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
                   className="w-12 h-12 rounded-xl bg-bg border border-border flex items-center justify-center text-text-muted hover:text-accent hover:border-[rgba(255,90,95,0.3)] hover:shadow-md transition-all no-underline bg-white shadow-sm">
@@ -64,7 +64,10 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-            <p className="font-body text-text-muted text-[14px] mt-6 font-light">@collabcellmedia</p>
+            <div className="flex flex-col gap-2">
+              <a href="tel:+919506822030" className="font-body text-text-muted text-[14px] hover:text-accent transition-colors no-underline font-light">+91 9506822030</a>
+              <a href="mailto:collabcellmedia@gmail.com" className="font-body text-text-muted text-[14px] hover:text-accent transition-colors no-underline font-light">collabcellmedia@gmail.com</a>
+            </div>
           </div>
         </div>
         <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4">

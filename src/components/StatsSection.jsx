@@ -4,7 +4,7 @@ import { motion, useInView } from 'framer-motion'
 const stats = [
   { value: 50, suffix: '+', label: 'Brand Collaborations' },
   { value: 10, suffix: 'M+', label: 'Reach Generated' },
-  { value: 500, suffix: '+', label: 'Creators in Network' },
+  { value: 1, suffix: ' Lakh+', label: 'Creators in Network' },
   { value: 4, suffix: 'x', label: 'Average Brand ROI' },
 ]
 
