@@ -24,7 +24,7 @@ const links = [
 
 const socials = [
   { icon: InstagramIcon, href: 'https://instagram.com/collabcellmedia', label: 'Instagram' },
-  { icon: WhatsAppIcon, href: 'https://wa.me/919506822030', label: 'WhatsApp' },
+  { icon: WhatsAppIcon, href: 'https://wa.me/8506822030', label: 'WhatsApp' },
   { icon: () => <Mail size={16} />, href: 'mailto:collabcellmedia@gmail.com', label: 'Email' },
 ]
 
