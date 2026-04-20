@@ -24,7 +24,7 @@ const links = [
 
 const socials = [
   { icon: InstagramIcon, href: 'https://instagram.com/collabcellmedia', label: 'Instagram' },
-  { icon: WhatsAppIcon, href: 'https://wa.me/8506822030', label: 'WhatsApp' },
+  { icon: WhatsAppIcon, href: 'https://wa.me/918506822030', label: 'WhatsApp' },
   { icon: () => <Mail size={16} />, href: 'mailto:collabcellmedia@gmail.com', label: 'Email' },
 ]
 
@@ -65,7 +65,7 @@ export default function Footer() {
               ))}
             </div>
             <div className="flex flex-col gap-2">
-              <a href="tel:+918506822030" className="font-body text-text-muted text-[14px] hover:text-accent transition-colors no-underline font-light">+91 8506822030</a>
+              <a href="https://wa.me/918506822030" target="_blank" rel="noopener noreferrer" className="font-body text-text-muted text-[14px] hover:text-accent transition-colors no-underline font-light">+91 8506822030</a>
               <a href="mailto:collabcellmedia@gmail.com" className="font-body text-text-muted text-[14px] hover:text-accent transition-colors no-underline font-light">collabcellmedia@gmail.com</a>
             </div>
           </div>
