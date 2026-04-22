@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useEffect, useRef } from 'react'
 import { Film, Video, Target, Clapperboard, LayoutDashboard, Handshake } from 'lucide-react'
 
 const services = [
@@ -8,6 +9,7 @@ const services = [
     name: 'Instagram Reels',
     desc: 'Scroll-stopping short-form video that captures attention in the first frame and holds it till the last. We handle concept, scripting, filming direction, and editing.',
     includes: ['Creative concept development', 'Script & storyboard', 'Creator casting & management', 'Post-production & delivery', 'Performance analytics'],
+    videoSrc: '/services/instagram-reels.mp4',
   },
   {
     icon: Video,
@@ -15,6 +17,7 @@ const services = [
     name: 'YouTube Shorts',
     desc: 'Quick, impactful storytelling that scales your brand presence across the world\'s largest video platform. Optimised for discovery and engagement.',
     includes: ['Channel strategy', 'Content calendar planning', 'Shorts production', 'SEO & thumbnail optimization', 'Audience growth tracking'],
+    videoSrc: '/services/youtube-shorts.mp4',
   },
   {
     icon: Target,
@@ -49,6 +52,42 @@ const services = [
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+}
+
+function VideoPlayer({ src }) {
+  const videoRef = useRef(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          videoRef.current?.play().catch(() => {})
+        } else {
+          videoRef.current?.pause()
+        }
+      },
+      { threshold: 0.5 }
+    )
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current)
+    }
+
+    return () => {
+      if (videoRef.current) observer.unobserve(videoRef.current)
+    }
+  }, [])
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      muted
+      playsInline
+      loop
+      className="absolute inset-0 w-full h-full object-cover"
+    />
+  )
 }
 
 export default function Services() {
@@ -133,8 +172,14 @@ export default function Services() {
                 </div>
                 {/* Visual Placeholder */}
                 <div className="flex-1 w-full h-full min-h-[300px] md:min-h-[500px] relative rounded-2xl overflow-hidden bg-[#FAFAFA] border border-border flex items-center justify-center group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[rgba(255,90,95,0.05)] to-[rgba(78,205,196,0.05)] group-hover:scale-105 transition-transform duration-700" />
-                  <service.icon size={120} className="text-border opacity-20 group-hover:text-accent group-hover:opacity-40 transition-all duration-500 transform group-hover:scale-110" />
+                  {service.videoSrc ? (
+                    <VideoPlayer src={service.videoSrc} />
+                  ) : (
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-br from-[rgba(255,90,95,0.05)] to-[rgba(78,205,196,0.05)] group-hover:scale-105 transition-transform duration-700" />
+                      <service.icon size={120} className="text-border opacity-20 group-hover:text-accent group-hover:opacity-40 transition-all duration-500 transform group-hover:scale-110" />
+                    </>
+                  )}
                 </div>
               </div>
             </div>

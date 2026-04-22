@@ -2,40 +2,40 @@ import { motion } from 'framer-motion'
 
 const projects = [
   {
-    brand: 'Head & Shoulders',
-    type: 'Influencer Campaign',
-    stat: '2.5M+ Reach',
-    gradient: 'from-teal to-deep-blue',
-  },
-  {
     brand: 'Himalaya',
     type: 'Instagram Reels Series',
     stat: '1.8M+ Views',
-    gradient: 'from-lime to-teal',
+    image: '/brands/himalaya.jpg',
   },
   {
     brand: 'WishCare',
     type: 'Creator-Brand Partnership',
     stat: '3.2x ROI',
-    gradient: 'from-purple to-magenta',
+    image: '/brands/wishcare.jpg',
   },
   {
     brand: 'BlaBliBlü',
     type: 'Meta Ad Campaign',
     stat: '500K+ Impressions',
-    gradient: 'from-magenta to-purple',
-  },
-  {
-    brand: 'Head & Shoulders',
-    type: 'YouTube Shorts',
-    stat: '1.2M+ Views',
-    gradient: 'from-deep-blue to-teal',
+    image: '/brands/blabliblu.jpg',
   },
   {
     brand: 'Himalaya',
     type: 'Storytelling Campaign',
     stat: '4.1x ROI',
-    gradient: 'from-teal to-lime',
+    image: '/brands/himalaya.jpg',
+  },
+  {
+    brand: 'WishCare',
+    type: 'YouTube Shorts',
+    stat: '1.2M+ Views',
+    image: '/brands/wishcare.jpg',
+  },
+  {
+    brand: 'BlaBliBlü',
+    type: 'Influencer Campaign',
+    stat: '2.5M+ Reach',
+    image: '/brands/blabliblu.jpg',
   },
 ]
 
@@ -101,7 +101,13 @@ export default function Work() {
                 transition={{ type: 'spring', stiffness: 300 }}
                 className="group bg-white rounded-3xl border border-border overflow-hidden cursor-default hover:border-[rgba(255,90,95,0.3)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] transition-all duration-300 shadow-sm"
               >
-                <div className={`aspect-[16/10] bg-gradient-to-br ${project.gradient} opacity-[0.03] group-hover:opacity-[0.08] transition-opacity`} />
+                <div className="aspect-[16/10] overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={`CollabCell Media x ${project.brand}`}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
                 <div className="p-8">
                   <p className="font-heading text-[12px] tracking-[0.15em] text-accent uppercase mb-3 font-semibold">{project.type}</p>
                   <h3 className="font-heading text-2xl font-bold text-text mb-4">{project.brand}</h3>
