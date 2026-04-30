@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import Lenis from '@studio-freight/lenis'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -9,6 +9,53 @@ import Services from './pages/Services'
 import Work from './pages/Work'
 import About from './pages/About'
 import Contact from './pages/Contact'
+
+function ScrollProgress() {
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      setProgress(docHeight > 0 ? scrollTop / docHeight : 0)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <div
+      className="scroll-progress"
+      style={{ transform: `scaleX(${progress})` }}
+    />
+  )
+}
+
+function CursorGlow() {
+  const glowRef = useRef(null)
+
+  useEffect(() => {
+    const glow = glowRef.current
+    if (!glow) return
+    let rafId = null
+
+    const handleMouseMove = (e) => {
+      if (rafId) cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        glow.style.left = e.clientX + 'px'
+        glow.style.top = e.clientY + 'px'
+      })
+    }
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      if (rafId) cancelAnimationFrame(rafId)
+    }
+  }, [])
+
+  return <div ref={glowRef} className="cursor-glow" />
+}
 
 export default function App() {
   const location = useLocation()
@@ -38,8 +85,15 @@ export default function App() {
     }
   }, [])
 
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
   return (
     <div className="flex flex-col min-h-screen bg-bg">
+      <ScrollProgress />
+      <CursorGlow />
       <Navbar />
       <div className="flex-1 flex flex-col">
         <AnimatePresence mode="wait">
