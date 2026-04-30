@@ -21,7 +21,7 @@ const partnerships = [
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.15 } },
+  show: { transition: { staggerChildren: 0.12 } },
 }
 
 const fadeUp = {
@@ -40,11 +40,12 @@ export default function PartnershipsSection() {
           transition={{ duration: 0.5 }}
           className="mb-24"
         >
-          <p className="font-body text-[14px] md:text-[16px] tracking-[0.2em] text-accent uppercase mb-6 font-semibold">
+          <p className="font-mono text-[13px] md:text-[14px] tracking-[0.2em] text-accent uppercase mb-6 font-medium">
             Partnerships
           </p>
-          <p className="font-body text-text-muted text-[18px] md:text-[22px] leading-[1.6] max-w-[600px] font-light">
-            We partner with ambitious brands that want real impact — from D2C startups to global giants.
+          <p className="font-body text-text-muted text-[17px] md:text-[21px] leading-[1.7] max-w-[600px] font-light">
+            We partner with ambitious brands that want real impact — from D2C
+            startups to global giants.
           </p>
         </motion.div>
 
@@ -54,24 +55,24 @@ export default function PartnershipsSection() {
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
         >
-          {partnerships.map((p, i) => (
+          {partnerships.map((p) => (
             <motion.div
               key={p.brand}
               variants={fadeUp}
-              className="partnership-line border-t border-border py-10 md:py-14 cursor-default group hover:bg-[rgba(255,90,95,0.02)] transition-colors duration-500 px-4 -mx-4 rounded-xl"
+              className="partnership-line border-t border-border py-10 md:py-14 cursor-default group hover:bg-bg-elevated/50 transition-all duration-500 px-6 -mx-6 rounded-xl"
             >
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <h3
-                  className="font-heading font-bold text-text group-hover:translate-x-4 transition-transform duration-500"
+                  className="font-heading font-bold text-text group-hover:translate-x-4 transition-transform duration-500 tracking-[-0.02em]"
                   style={{ fontSize: 'clamp(28px, 4vw, 56px)' }}
                 >
                   CollabCell Media{' '}
-                  <span className="text-accent opacity-50 font-body font-light mx-2">
+                  <span className="text-text-dim font-body font-light mx-2">
                     ×
                   </span>{' '}
                   <span className="accent-text">{p.brand}</span>
                 </h3>
-                <p className="font-body text-text-muted text-[15px] md:text-[16px] tracking-wide font-light opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-2 group-hover:translate-y-0">
+                <p className="font-body text-text-muted text-[14px] md:text-[15px] tracking-wide font-light opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
                   {p.desc}
                 </p>
               </div>

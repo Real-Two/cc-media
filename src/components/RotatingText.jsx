@@ -19,9 +19,9 @@ export default function RotatingText() {
         <motion.span
           key={words[index]}
           className="inline-block"
-          initial={{ y: 40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -40, opacity: 0 }}
+          initial={{ y: 40, opacity: 0, filter: 'blur(8px)' }}
+          animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+          exit={{ y: -40, opacity: 0, filter: 'blur(8px)' }}
           transition={{ duration: 0.4, ease: 'easeInOut' }}
         >
           {words[index]}

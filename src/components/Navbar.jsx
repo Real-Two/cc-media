@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
 const navLinks = [
@@ -29,10 +29,14 @@ export default function Navbar() {
     <motion.nav
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
       style={{
-        backgroundColor: scrolled ? 'rgba(255,255,255,0.9)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(0,0,0,0.05)' : '1px solid transparent'
+        backgroundColor: scrolled
+          ? 'rgba(10, 10, 10, 0.85)'
+          : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
+        borderBottom: scrolled
+          ? '1px solid rgba(255,255,255,0.06)'
+          : '1px solid transparent',
       }}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -41,8 +45,12 @@ export default function Navbar() {
       <div className="max-w-[1400px] mx-auto flex items-center justify-between px-6 md:px-12 py-5 w-full">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 no-underline">
-          <img src="/logo.png" alt="CollabCell Media" className="w-10 h-10 object-contain" />
-          <span className="font-heading text-[18px] md:text-[20px] font-bold tracking-[0.15em] text-text">
+          <img
+            src="/logo.png"
+            alt="CollabCell Media"
+            className="w-10 h-10 object-contain"
+          />
+          <span className="font-heading text-[17px] md:text-[19px] font-bold tracking-[0.12em] text-text">
             COLLABCELL MEDIA
           </span>
         </Link>
@@ -53,10 +61,10 @@ export default function Navbar() {
             <Link
               key={link.name}
               to={link.path}
-              className={`font-body text-[15px] tracking-wide no-underline transition-colors duration-300 font-medium ${
+              className={`link-animated font-body text-[14px] tracking-wide no-underline transition-colors duration-300 font-medium ${
                 location.pathname === link.path
                   ? 'text-accent'
-                  : 'text-text hover:text-accent-light'
+                  : 'text-text-muted hover:text-text'
               }`}
             >
               {link.name}
@@ -64,9 +72,9 @@ export default function Navbar() {
           ))}
           <Link
             to="/contact"
-            className="gradient-btn px-8 py-3 rounded-full text-[14px] font-body font-bold tracking-wide no-underline shadow-md"
+            className="gradient-btn px-7 py-3 rounded-full text-[13px] font-body font-bold tracking-wide no-underline"
           >
-            Let's Talk
+            <span>Let's Talk</span>
           </Link>
         </div>
 
@@ -81,34 +89,45 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {mobileOpen && (
-        <motion.div
-          className="md:hidden bg-bg-light border-t border-border px-6 py-8 shadow-xl"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-        >
-          <div className="flex flex-col gap-6">
-            {navLinks.map((link) => (
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            className="md:hidden bg-bg-light/95 backdrop-blur-xl border-t border-border px-6 py-8"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex flex-col gap-6">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <Link
+                    to={link.path}
+                    className={`font-body text-xl font-medium no-underline ${
+                      location.pathname === link.path
+                        ? 'text-accent'
+                        : 'text-text'
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
+              ))}
               <Link
-                key={link.name}
-                to={link.path}
-                className={`font-body text-xl font-medium no-underline ${
-                  location.pathname === link.path ? 'text-accent' : 'text-text'
-                }`}
+                to="/contact"
+                className="gradient-btn px-6 py-4 rounded-full text-center text-[16px] font-body font-bold no-underline mt-4"
               >
-                {link.name}
+                <span>Let's Talk</span>
               </Link>
-            ))}
-            <Link
-              to="/contact"
-              className="gradient-btn px-6 py-4 rounded-full text-center text-[16px] font-body font-bold no-underline mt-4"
-            >
-              Let's Talk
-            </Link>
-          </div>
-        </motion.div>
-      )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.nav>
   )
 }
