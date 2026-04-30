@@ -38,9 +38,9 @@ export default function Navbar() {
           ? '1px solid rgba(255,255,255,0.06)'
           : undefined,
       }}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
     >
       <div className="max-w-[1400px] mx-auto flex items-center justify-between px-6 md:px-12 py-5 w-full">
         {/* Logo — animated on scroll */}
