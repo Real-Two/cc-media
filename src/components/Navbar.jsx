@@ -27,16 +27,16 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 max-md:bg-[rgba(10,10,10,0.9)] max-md:backdrop-blur-xl max-md:border-b max-md:border-border"
       style={{
         backgroundColor: scrolled
           ? 'rgba(10, 10, 10, 0.85)'
-          : 'transparent',
-        backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
+          : undefined,
+        backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : undefined,
+        WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(180%)' : undefined,
         borderBottom: scrolled
           ? '1px solid rgba(255,255,255,0.06)'
-          : '1px solid transparent',
+          : undefined,
       }}
       initial={{ y: -100 }}
       animate={{ y: 0 }}

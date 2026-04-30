@@ -19,6 +19,12 @@ export default function RotatingText() {
         <motion.span
           key={words[index]}
           className="inline-block"
+          style={{
+            background: 'linear-gradient(135deg, #ff6b35, #7c3aed)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}
           initial={{ y: 40, opacity: 0, filter: 'blur(8px)' }}
           animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
           exit={{ y: -40, opacity: 0, filter: 'blur(8px)' }}

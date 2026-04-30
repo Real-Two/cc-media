@@ -116,11 +116,11 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="font-heading font-extrabold leading-[1.02] mb-8 tracking-[-0.03em] text-text"
-            style={{ fontSize: 'clamp(52px, 10vw, 130px)' }}
+            className="font-heading font-extrabold leading-[1.02] mb-8 tracking-[-0.03em] text-text w-full"
+            style={{ fontSize: 'clamp(36px, 10vw, 130px)' }}
           >
             We shape{' '}
-            <span className="accent-text inline-block">
+            <span className="inline-block">
               <RotatingText />
             </span>
             <br />
