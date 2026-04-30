@@ -21,13 +21,13 @@ export default function About() {
   return (
     <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} className="relative flex flex-col gap-32 md:gap-48 pt-40 pb-64">
       {/* Hero */}
-      <section className="flex flex-col items-center text-center px-6 md:px-12 relative">
+      <section className="flex flex-col items-center text-center px-5 sm:px-8 md:px-12 relative">
         <div className="absolute inset-0 hero-gradient-bg opacity-40" />
         <div className="max-w-[1200px] w-full relative z-10">
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="inline-block px-5 py-2.5 rounded-full border border-border bg-bg-elevated/50 backdrop-blur-sm mb-12">
             <span className="font-mono text-[12px] md:text-[13px] tracking-[0.2em] text-accent uppercase font-medium">About Us</span>
           </motion.div>
-          <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="font-heading font-bold text-text mb-8 leading-[1.05] tracking-[-0.02em]" style={{ fontSize: 'clamp(52px, 12vw, 150px)' }}>
+          <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="font-heading font-bold text-text mb-8 leading-[1.05] tracking-[-0.02em]" style={{ fontSize: 'clamp(36px, 10vw, 150px)' }}>
             The Bridge Between<br /><span className="accent-text">Creators & Brands.</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="font-body text-text-muted text-[17px] md:text-[22px] leading-[1.7] max-w-[600px] mx-auto font-light">
@@ -39,7 +39,7 @@ export default function About() {
       {/* Mission */}
       <section className="flex flex-col items-center justify-center text-center relative">
         <div className="absolute inset-0 grid-pattern opacity-30" />
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 w-full relative z-10">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 md:px-12 w-full relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-[900px] mx-auto flex flex-col items-center">
             <p className="font-mono text-[12px] tracking-[0.2em] text-accent uppercase mb-8 font-medium">Our Mission</p>
             <h2 className="font-heading font-bold text-text mb-8 leading-[1.1] tracking-[-0.02em]" style={{ fontSize: 'clamp(48px, 8vw, 100px)' }}>
@@ -52,7 +52,7 @@ export default function About() {
 
       {/* Values */}
       <section>
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 w-full">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 md:px-12 w-full">
           <div className="text-center mb-20">
             <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="inline-block px-5 py-2.5 rounded-full border border-border bg-bg-elevated/50 backdrop-blur-sm">
               <span className="font-mono text-[12px] md:text-[13px] tracking-[0.2em] text-accent uppercase font-medium">Our Values</span>

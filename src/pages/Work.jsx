@@ -51,7 +51,7 @@ export default function Work() {
       {/* Hero */}
       <section className="pt-48 pb-24 md:pt-56 md:pb-32 flex flex-col items-center text-center relative">
         <div className="absolute inset-0 hero-gradient-bg opacity-50" />
-        <div className="max-w-[1200px] mx-auto px-6 md:px-12 w-full relative z-10">
+        <div className="max-w-[1200px] mx-auto px-5 sm:px-8 md:px-12 w-full relative z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
             animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
@@ -74,7 +74,7 @@ export default function Work() {
 
       {/* Projects Grid */}
       <section className="pb-48 md:pb-64 flex-1">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 md:px-12">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, i) => (
               <motion.div

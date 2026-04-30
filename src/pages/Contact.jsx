@@ -18,7 +18,7 @@ export default function Contact() {
   return (
     <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} className="relative flex flex-col flex-1 pb-32">
       <section className="pb-[400px] md:pb-[500px] flex flex-col" style={{ paddingTop: '200px' }}>
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 w-full">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 md:px-12 w-full">
           <div className="grid lg:grid-cols-[1fr_1.1fr] gap-16 lg:gap-24 items-start">
             {/* Left — Info */}
             <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} className="lg:sticky lg:top-40">

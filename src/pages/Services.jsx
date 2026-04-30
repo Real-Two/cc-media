@@ -167,7 +167,7 @@ export default function Services() {
       {/* Hero */}
       <section className="pt-48 pb-24 md:pt-56 md:pb-32 flex flex-col items-center text-center relative">
         <div className="absolute inset-0 hero-gradient-bg opacity-50" />
-        <div className="max-w-[1200px] mx-auto px-6 md:px-12 w-full relative z-10">
+        <div className="max-w-[1200px] mx-auto px-5 sm:px-8 md:px-12 w-full relative z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -202,7 +202,7 @@ export default function Services() {
       </section>
 
       {/* Sticky Cards Scroll Section */}
-      <section className="pb-48 md:pb-64 px-6 md:px-12 max-w-[1400px] mx-auto relative">
+      <section className="pb-48 md:pb-64 px-5 sm:px-8 md:px-12 max-w-[1400px] mx-auto relative">
         <div className="flex flex-col gap-0 pb-[10vh]">
           {services.map((service, i) => {
             const colors = colorStyles[service.color]

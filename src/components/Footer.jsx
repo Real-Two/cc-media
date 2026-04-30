@@ -100,7 +100,7 @@ export default function Footer() {
         {/* Subtle top glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
 
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-16">
+        <div className="max-w-[1400px] mx-auto px-5 sm:px-8 md:px-12 py-16">
           <div className="grid md:grid-cols-3 gap-12 md:gap-8 mb-12">
             {/* Company Info */}
             <div>

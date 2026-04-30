@@ -25,6 +25,7 @@ function MagneticButton({ children, className, ...props }) {
       onMouseLeave={handleMouseLeave}
       animate={{ x: pos.x, y: pos.y }}
       transition={{ type: 'spring', stiffness: 300, damping: 20, mass: 0.5 }}
+      className="w-full sm:w-auto"
     >
       <Link className={className} {...props}>
         {children}
@@ -95,7 +96,7 @@ export default function HeroSection() {
       {/* Content */}
       <motion.div
         style={{ y: headlineY, opacity: headlineOpacity }}
-        className="relative z-10 max-w-[1600px] w-full mx-auto px-6 md:px-12 pt-40 pb-24 flex-1 flex flex-col justify-center items-center text-center"
+        className="relative z-10 max-w-[1600px] w-full mx-auto px-5 sm:px-8 md:px-12 pt-36 pb-24 flex-1 flex flex-col justify-center items-center text-center"
       >
         <div className="max-w-[1100px] flex flex-col items-center">
           {/* Badge */}
@@ -116,8 +117,8 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="font-heading font-extrabold leading-[1.02] mb-8 tracking-[-0.03em] text-text w-full"
-            style={{ fontSize: 'clamp(36px, 10vw, 130px)' }}
+            className="font-heading font-extrabold leading-[1.05] mb-8 tracking-[-0.03em] text-text w-full"
+            style={{ fontSize: 'clamp(32px, 9vw, 130px)' }}
           >
             We shape{' '}
             <span className="inline-block">
@@ -132,7 +133,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 0.6, delay: 0.35 }}
-            className="font-body text-text-muted text-[17px] md:text-[21px] leading-[1.7] max-w-[700px] mb-14 font-light"
+            className="font-body text-text-muted text-[15px] md:text-[21px] leading-[1.7] max-w-[700px] mb-14 font-light px-2"
           >
             A cross-functional team bridging the gap between raw creator talent
             and scalable brand growth. No fluff, just results.
@@ -147,17 +148,17 @@ export default function HeroSection() {
               delay: 0.55,
               ease: [0.34, 1.56, 0.64, 1],
             }}
-            className="flex flex-col sm:flex-row gap-5 w-full justify-center"
+            className="flex flex-col sm:flex-row gap-4 w-full justify-center items-center px-4 sm:px-0"
           >
             <MagneticButton
               to="/contact"
-              className="gradient-btn cta-pulse px-10 py-5 rounded-full font-body text-[16px] font-semibold tracking-wide no-underline flex items-center justify-center whitespace-nowrap shrink-0 min-w-[220px]"
+              className="gradient-btn cta-pulse px-10 py-5 rounded-full font-body text-[16px] font-semibold tracking-wide no-underline flex items-center justify-center w-full sm:w-auto"
             >
               <span>Start a Project</span>
             </MagneticButton>
             <MagneticButton
               to="/work"
-              className="ghost-btn px-10 py-5 rounded-full font-body text-[16px] font-medium tracking-wide no-underline flex items-center justify-center whitespace-nowrap shrink-0 min-w-[220px]"
+              className="ghost-btn px-10 py-5 rounded-full font-body text-[16px] font-medium tracking-wide no-underline flex items-center justify-center w-full sm:w-auto"
             >
               Explore Our Work
             </MagneticButton>

@@ -11,7 +11,7 @@ export default function PhilosophySection() {
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 grid-pattern opacity-50" />
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 w-full text-center flex flex-col items-center relative z-10">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 md:px-12 w-full text-center flex flex-col items-center relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
           whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}

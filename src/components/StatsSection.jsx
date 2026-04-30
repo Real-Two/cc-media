@@ -67,7 +67,7 @@ export default function StatsSection() {
         />
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-20 md:py-28 relative z-10">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 md:px-12 py-20 md:py-28 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-6">
           {stats.map((stat, i) => (
             <motion.div

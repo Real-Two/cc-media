@@ -55,7 +55,7 @@ export default function CTASection() {
       {/* Grid pattern */}
       <div className="absolute inset-0 grid-pattern opacity-30" />
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-24 w-full relative z-10">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 md:px-12 py-24 w-full relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}

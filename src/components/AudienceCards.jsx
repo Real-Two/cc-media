@@ -5,8 +5,8 @@ import {
 } from 'lucide-react'
 
 const container = { hidden: {}, show: { transition: { staggerChildren: 0.15 } } }
-const slideLeft = { hidden: { opacity: 0, x: -60 }, show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeOut' } } }
-const slideRight = { hidden: { opacity: 0, x: 60 }, show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeOut' } } }
+const slideLeft = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } } }
+const slideRight = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } } }
 
 const creatorPerks = [
   { icon: Palette, text: 'More creative freedom' },
@@ -51,7 +51,7 @@ function PerkItem({ Icon, text, color, index }) {
 export default function AudienceCards() {
   return (
     <section className="relative overflow-hidden py-8 md:py-0">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-24 w-full">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-8 md:px-12 py-24 w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,7 +61,7 @@ export default function AudienceCards() {
           <p className="font-mono text-[13px] md:text-[14px] tracking-[0.2em] text-accent uppercase mb-6 font-medium">
             Who We Serve
           </p>
-          <h2 className="font-heading font-extrabold text-text mb-20 leading-[1.1] tracking-[-0.03em]" style={{ fontSize: 'clamp(48px, 8vw, 96px)' }}>
+          <h2 className="font-heading font-extrabold text-text mb-16 md:mb-20 leading-[1.1] tracking-[-0.03em]" style={{ fontSize: 'clamp(36px, 8vw, 96px)' }}>
             Two audiences.
             <br />
             <span className="accent-text">One mission.</span>
@@ -74,11 +74,11 @@ export default function AudienceCards() {
             variants={slideLeft}
             whileHover={{ y: -6 }}
             transition={{ type: 'spring', stiffness: 300 }}
-            className="gradient-glow-border glass rounded-3xl p-10 md:p-14 relative overflow-hidden group"
+            className="gradient-glow-border glass rounded-3xl p-6 sm:p-10 md:p-14 relative overflow-hidden group"
           >
             <div className="absolute top-0 left-0 h-[3px] w-0 group-hover:w-full bg-gradient-to-r from-accent to-accent-light transition-all duration-700 ease-out" />
             <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10 pl-4 md:pl-6">
+            <div className="relative z-10 pl-0 sm:pl-4 md:pl-6">
               <h3 className="font-heading text-4xl md:text-5xl font-extrabold text-text mb-4 tracking-[-0.02em]">
                 Creators
               </h3>
@@ -98,11 +98,11 @@ export default function AudienceCards() {
             variants={slideRight}
             whileHover={{ y: -6 }}
             transition={{ type: 'spring', stiffness: 300 }}
-            className="gradient-glow-border glass rounded-3xl p-10 md:p-14 relative overflow-hidden group"
+            className="gradient-glow-border glass rounded-3xl p-6 sm:p-10 md:p-14 relative overflow-hidden group"
           >
             <div className="absolute top-0 left-0 h-[3px] w-0 group-hover:w-full bg-gradient-to-r from-purple to-purple-light transition-all duration-700 ease-out" />
             <div className="absolute inset-0 bg-gradient-to-br from-purple/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10 pl-4 md:pl-6">
+            <div className="relative z-10 pl-0 sm:pl-4 md:pl-6">
               <h3 className="font-heading text-4xl md:text-5xl font-extrabold text-text mb-4 tracking-[-0.02em]">
                 Brands
               </h3>
