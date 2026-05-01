@@ -73,6 +73,9 @@ export default function App() {
       infinite: false,
     })
 
+    // Expose so other components can subscribe to Lenis scroll events
+    window.__lenis = lenis
+
     function raf(time) {
       lenis.raf(time)
       requestAnimationFrame(raf)
@@ -81,6 +84,7 @@ export default function App() {
     requestAnimationFrame(raf)
 
     return () => {
+      window.__lenis = null
       lenis.destroy()
     }
   }, [])
