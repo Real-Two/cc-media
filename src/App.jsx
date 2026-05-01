@@ -91,7 +91,7 @@ export default function App() {
   }, [location.pathname])
 
   return (
-    <div className="flex flex-col min-h-screen bg-bg overflow-x-hidden max-w-[100vw]">
+    <div className="flex flex-col min-h-screen bg-bg overflow-x-clip max-w-[100vw]">
       <ScrollProgress />
       <CursorGlow />
       <Navbar />

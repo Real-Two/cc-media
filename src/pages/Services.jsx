@@ -209,8 +209,8 @@ export default function Services() {
             return (
               <div
                 key={service.num}
-                className="sticky top-[120px] pt-[20px] h-auto min-h-[60vh] w-full flex justify-center"
-                style={{ zIndex: i + 1 }}
+                className="sticky pt-[20px] h-auto min-h-[60vh] w-full flex justify-center"
+                style={{ zIndex: i + 1, top: `${120 + i * 30}px` }}
               >
                 <motion.div
                   initial={{ opacity: 0, y: 40 }}
