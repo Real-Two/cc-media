@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import {
   Film,
   Video,
@@ -121,177 +121,224 @@ const colorStyles = {
 
 const TOTAL = services.length
 
-// Slide in from below, slide out to above (scrolling down)
-// Reverse for scrolling up
-const slideVariants = {
-  enter: (dir) => ({
-    y: dir > 0 ? '100%' : '-100%',
-    opacity: 0,
-    scale: 0.96,
-  }),
-  center: {
-    y: '0%',
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.55,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  },
-  exit: (dir) => ({
-    y: dir > 0 ? '-30%' : '30%',
-    opacity: 0,
-    scale: 0.92,
-    transition: {
-      duration: 0.45,
-      ease: [0.55, 0.055, 0.675, 0.19],
-    },
-  }),
-}
-
-function ServiceSlide({ service }) {
+function ServiceCard({ service, index, carouselRef }) {
+  const cardRef = useRef(null)
   const colors = colorStyles[service.color]
-  return (
-    <div className="w-full max-w-[1400px] mx-auto bg-bg-card border border-border rounded-3xl p-8 md:p-14 shadow-[0_24px_80px_rgba(0,0,0,0.5)] flex flex-col md:flex-row gap-10 md:gap-16 items-stretch">
-      {/* Text */}
-      <div className="flex-1 flex flex-col justify-center">
-        <span className="font-mono text-[50px] md:text-[70px] font-bold text-text-dim/20 -ml-2 block leading-none">
-          {service.num}
-        </span>
-        <div className="flex items-center gap-4 mb-5 -mt-6">
-          <div className={`w-14 h-14 rounded-2xl ${colors.iconBg} flex items-center justify-center border shrink-0`}>
-            <service.icon size={28} className={colors.iconColor} />
-          </div>
-          <h2 className="font-heading text-3xl md:text-5xl font-bold text-text tracking-[-0.02em]">
-            {service.name}
-          </h2>
-        </div>
-        <p className="font-body text-text-muted text-[15px] md:text-[17px] leading-[1.7] mb-8 font-light max-w-[500px]">
-          {service.desc}
-        </p>
-        <div>
-          <p className="font-mono text-[11px] tracking-[0.2em] text-text-muted uppercase mb-4 font-medium">
-            What's Included
-          </p>
-          <ul className="space-y-3">
-            {service.includes.map((item) => (
-              <li key={item} className="font-body text-[14px] text-text-muted flex items-center gap-4 font-light">
-                <span className={`w-2 h-2 rounded-full ${colors.dotBg} shrink-0 ${colors.dotGlow}`} />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
 
-      {/* Visual */}
-      <div className="flex-1 w-full min-h-[260px] md:min-h-[420px] relative rounded-2xl overflow-hidden bg-bg-elevated border border-border flex items-center justify-center">
-        {service.videoSrc ? (
-          <video
-            src={service.videoSrc}
-            muted
-            playsInline
-            loop
-            autoPlay
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        ) : (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-purple/5" />
-            <service.icon size={120} className={`${colors.iconColor} opacity-10`} />
-          </>
-        )}
-      </div>
-    </div>
+  // Track this card's position inside the horizontal scroll container
+  const { scrollXProgress } = useScroll({
+    target: cardRef,
+    container: carouselRef,
+    axis: 'x',
+    offset: ['start end', 'end start'], // 0 when entering right, 0.5 centered, 1 exiting left
+  })
+
+  // ANTI-GRAVITY / MAGNETIC PARALLAX PHYSICS
+  // Entering (0 -> 0.5): Card starts pushed further right (40%), and moves left faster than the scroll to snap into center (0%). This creates a strong "pulled in" deceleration effect.
+  // Exiting (0.5 -> 1.0): Card starts center (0%) and moves further left (-40%) than normal scroll, making it accelerate out like it's being repelled.
+  const x = useTransform(scrollXProgress, [0, 0.5, 1], ['40%', '0%', '-40%'])
+  
+  // Scale: Enlarges smoothly when hitting the center, shrinks when exiting
+  const scale = useTransform(scrollXProgress, [0, 0.5, 1], [0.75, 1, 0.75])
+  
+  // Opacity: Fades in early, fades out late for smooth visual overlap
+  const opacity = useTransform(scrollXProgress, [0, 0.3, 0.5, 0.7, 1], [0, 1, 1, 1, 0])
+
+  return (
+    <section 
+      ref={cardRef} 
+      className="w-screen h-screen flex-shrink-0 snap-center flex items-center justify-center px-5 sm:px-8 md:px-12 py-8 relative"
+    >
+      <motion.div 
+        style={{ x, scale, opacity }}
+        className="w-full max-w-[1400px] mx-auto bg-bg-card border border-border rounded-3xl p-8 md:p-14 shadow-[0_24px_80px_rgba(0,0,0,0.5)] flex flex-col md:flex-row gap-10 md:gap-16 items-center h-full max-h-[85vh] will-change-transform"
+      >
+        {/* Text */}
+        <div className="flex-1 flex flex-col justify-center">
+          <span className="font-mono text-[50px] md:text-[70px] font-bold text-text-dim/20 -ml-2 block leading-none">
+            {service.num}
+          </span>
+          <div className="flex items-center gap-4 mb-5 -mt-6">
+            <div className={`w-14 h-14 rounded-2xl ${colors.iconBg} flex items-center justify-center border shrink-0`}>
+              <service.icon size={28} className={colors.iconColor} />
+            </div>
+            <h2 className="font-heading text-3xl md:text-5xl font-bold text-text tracking-[-0.02em]">
+              {service.name}
+            </h2>
+          </div>
+          <p className="font-body text-text-muted text-[15px] md:text-[17px] leading-[1.7] mb-8 font-light max-w-[500px]">
+            {service.desc}
+          </p>
+          <div>
+            <p className="font-mono text-[11px] tracking-[0.2em] text-text-muted uppercase mb-4 font-medium">
+              What's Included
+            </p>
+            <ul className="space-y-3">
+              {service.includes.map((item) => (
+                <li key={item} className="font-body text-[14px] text-text-muted flex items-center gap-4 font-light">
+                  <span className={`w-2 h-2 rounded-full ${colors.dotBg} shrink-0 ${colors.dotGlow}`} />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Visual */}
+        <div className="flex-1 w-full relative rounded-2xl overflow-hidden bg-bg-elevated border border-border flex items-center justify-center self-stretch min-h-[300px]">
+          {service.videoSrc ? (
+            <video
+              src={service.videoSrc}
+              muted
+              playsInline
+              loop
+              autoPlay
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-purple/5" />
+              <service.icon size={120} className={`${colors.iconColor} opacity-10`} />
+            </>
+          )}
+        </div>
+      </motion.div>
+    </section>
   )
 }
 
-function CardDeck() {
-  const sectionRef = useRef(null)
+function CardCarousel() {
+  const carouselRef = useRef(null)
   const [active, setActive] = useState(0)
-  const [dir, setDir] = useState(1)
-  const activeRef = useRef(0)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
+    setIsMounted(true)
+  }, [])
 
-    const handleScroll = ({ scroll }) => {
-      const sectionTop = section.offsetTop
-      const sectionHeight = section.offsetHeight
-      const viewH = window.innerHeight
-      const scrolled = scroll - sectionTop
-      const scrollable = sectionHeight - viewH
-      const progress = Math.max(0, Math.min(1, scrolled / scrollable))
-      const next = Math.min(TOTAL - 1, Math.max(0, Math.round(progress * (TOTAL - 1))))
+  // Update active dot indicator based on horizontal scroll position
+  const handleScroll = () => {
+    if (!carouselRef.current) return
+    const scrollLeft = carouselRef.current.scrollLeft
+    const width = carouselRef.current.clientWidth
+    const index = Math.round(scrollLeft / width)
+    if (index !== active) {
+      setActive(index)
+    }
+  }
 
-      if (next !== activeRef.current) {
-        setDir(next > activeRef.current ? 1 : -1)
-        activeRef.current = next
-        setActive(next)
+  // Momentum Physics: One wheel scroll gesture = one card transition
+  useEffect(() => {
+    const el = carouselRef.current
+    if (!el) return
+
+    let isScrolling = false
+    let scrollTimeout
+
+    const onWheel = (e) => {
+      // Allow native horizontal swipes (like trackpads) to work natively with scroll-snap
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
+
+      // Only hijack vertical scroll if the carousel is mostly centered in the viewport
+      const rect = el.getBoundingClientRect()
+      if (Math.abs(rect.top) > 100) return
+
+      const isAtStart = el.scrollLeft <= 0
+      const isAtEnd = Math.ceil(el.scrollLeft + el.clientWidth) >= el.scrollWidth
+
+      // Allow vertical scroll out of the carousel at boundaries
+      if (isAtStart && e.deltaY < 0) return
+      if (isAtEnd && e.deltaY > 0) return
+
+      // Hijack vertical wheel scroll to move horizontally
+      e.preventDefault()
+      e.stopPropagation()
+
+      if (!isScrolling) {
+        isScrolling = true
+        
+        // Calculate exact target to snap perfectly
+        const direction = Math.sign(e.deltaY)
+        const targetLeft = el.scrollLeft + (direction * el.clientWidth)
+        
+        el.scrollTo({
+          left: targetLeft,
+          behavior: 'smooth'
+        })
+
+        // Enforce intentional transition - block multiple fast scrolls
+        scrollTimeout = setTimeout(() => {
+          isScrolling = false
+        }, 800)
       }
     }
 
-    const timeout = setTimeout(() => {
-      if (window.__lenis) window.__lenis.on('scroll', handleScroll)
-    }, 100)
-
+    el.addEventListener('wheel', onWheel, { passive: false })
     return () => {
-      clearTimeout(timeout)
-      if (window.__lenis) window.__lenis.off('scroll', handleScroll)
+      el.removeEventListener('wheel', onWheel)
+      clearTimeout(scrollTimeout)
     }
   }, [])
 
   return (
-    // Tall section: each card gets its own 100vh of scroll room
-    <section
-      ref={sectionRef}
-      style={{ height: `${TOTAL * 100}vh`, position: 'relative' }}
-    >
-      {/* Sticky viewport — one full screen, one card at a time */}
-      <div
-        style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden' }}
-        className="flex items-center px-5 sm:px-8 md:px-12"
+    <div className="relative w-full h-screen bg-bg">
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+      
+      <div 
+        ref={carouselRef}
+        onScroll={handleScroll}
+        className="w-full h-full flex overflow-x-auto overflow-y-hidden snap-x snap-mandatory hide-scrollbar relative z-10"
       >
-        {/* Progress dots */}
-        <div className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-3">
-          {services.map((_, i) => (
+        {isMounted && services.map((service, i) => (
+          <ServiceCard 
+            key={service.num} 
+            service={service} 
+            index={i} 
+            carouselRef={carouselRef} 
+          />
+        ))}
+      </div>
+
+      {/* Navigation Indicators */}
+      <div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3">
+        {services.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => {
+              carouselRef.current?.scrollTo({
+                left: i * window.innerWidth,
+                behavior: 'smooth'
+              })
+            }}
+            className="rounded-full transition-all duration-300 cursor-pointer p-1 -m-1"
+            aria-label={`Go to slide ${i + 1}`}
+          >
             <div
-              key={i}
-              className="rounded-full transition-all duration-400"
+              className="rounded-full transition-all duration-300"
               style={{
-                width: active === i ? '8px' : '5px',
-                height: active === i ? '8px' : '5px',
+                width: active === i ? '8px' : '6px',
+                height: active === i ? '8px' : '6px',
                 background: active === i ? 'var(--color-accent)' : 'rgba(255,255,255,0.2)',
                 boxShadow: active === i ? '0 0 8px rgba(255,107,53,0.6)' : 'none',
               }}
             />
-          ))}
-        </div>
-
-        {/* Counter */}
-        <div className="absolute top-6 right-8 z-10 font-mono text-[11px] tracking-[0.2em] text-text-dim/40 uppercase">
-          {String(active + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
-        </div>
-
-        {/* Single card — animated in/out */}
-        <div className="w-full relative overflow-hidden" style={{ height: '85vh' }}>
-          <AnimatePresence custom={dir} mode="wait">
-            <motion.div
-              key={active}
-              custom={dir}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              className="absolute inset-0 flex items-center"
-            >
-              <ServiceSlide service={services[active]} />
-            </motion.div>
-          </AnimatePresence>
-        </div>
+          </button>
+        ))}
       </div>
-    </section>
+
+      {/* Counter */}
+      <div className="absolute top-6 right-8 z-50 font-mono text-[11px] tracking-[0.2em] text-text-dim/40 uppercase pointer-events-none">
+        {String(active + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
+      </div>
+    </div>
   )
 }
 
@@ -341,8 +388,10 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Single-card scroll catalogue */}
-      <CardDeck />
+      {/* Horizontal Scroll Snap Carousel */}
+      <CardCarousel />
+      
+      {/* Spacer to allow scrolling past carousel if needed, though footer comes next in layout */}
     </motion.main>
   )
 }
