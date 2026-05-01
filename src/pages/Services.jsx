@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import {
   Film,
   Video,
@@ -86,7 +86,7 @@ const services = [
     icon: Handshake,
     num: '06',
     name: 'Creator-Brand Matchmaking',
-    desc: "Connecting the right talent to the right brand. Every match is intentional, every result is measurable. Our network spans 500+ creators.",
+    desc: "Connecting the right talent to the right brand. Every match is intentional, every result is measurable. Our network spans 1 lakh+ creators.",
     includes: [
       'Creator database access',
       'Brand alignment scoring',
@@ -119,39 +119,97 @@ const colorStyles = {
   },
 }
 
-function VideoPlayer({ src }) {
-  const videoRef = useRef(null)
+const TOTAL = services.length
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          videoRef.current?.play().catch(() => {})
-        } else {
-          videoRef.current?.pause()
-        }
-      },
-      { threshold: 0.5 }
-    )
+/**
+ * Each card is a 100vh sticky slot.
+ * useScroll tracks from "this card's top = viewport top" → "this card's bottom = viewport top"
+ * i.e. exactly as this card scrolls away off the top.
+ * Scale + opacity animate the card shrinking back as the next card rises over it.
+ */
+function ServiceCard({ service, index, isLast }) {
+  const ref = useRef(null)
+  const colors = colorStyles[service.color]
 
-    if (videoRef.current) {
-      observer.observe(videoRef.current)
-    }
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    // start: when top of card hits top of viewport
+    // end:   when bottom of card hits top of viewport (card has fully scrolled away)
+    offset: ['start start', 'end start'],
+  })
 
-    return () => {
-      if (videoRef.current) observer.unobserve(videoRef.current)
-    }
-  }, [])
+  // As scrollYProgress goes 0→1 (card scrolling away), scale back and fade
+  const scale = useTransform(scrollYProgress, [0, 1], isLast ? [1, 1] : [1, 0.85])
+  const opacity = useTransform(scrollYProgress, [0, 0.75, 1], isLast ? [1, 1, 1] : [1, 1, 0])
+  const y = useTransform(scrollYProgress, [0, 1], isLast ? ['0%', '0%'] : ['0%', '-5%'])
 
   return (
-    <video
-      ref={videoRef}
-      src={src}
-      muted
-      playsInline
-      loop
-      className="absolute inset-0 w-full h-full object-cover"
-    />
+    // Outer: 100vh tall, position:relative — ref target for useScroll
+    <div
+      ref={ref}
+      style={{ height: '100vh', position: 'relative', zIndex: index + 1 }}
+    >
+      {/* Inner: sticky so it pins to top while outer scrolls away */}
+      <div style={{ position: 'sticky', top: 0, height: '100vh' }}>
+        {/* Animated card — scales/fades as it scrolls off */}
+        <motion.div
+          style={{ scale, opacity, y }}
+          className="absolute inset-0 flex items-center px-5 sm:px-8 md:px-12 py-8"
+        >
+        <div className="w-full max-w-[1400px] mx-auto bg-bg-card border border-border rounded-3xl p-8 md:p-14 shadow-[0_24px_80px_rgba(0,0,0,0.5)] flex flex-col md:flex-row gap-10 md:gap-16 items-center h-full max-h-[85vh]">
+          {/* Text */}
+          <div className="flex-1 flex flex-col justify-center">
+            <span className="font-mono text-[50px] md:text-[70px] font-bold text-text-dim/20 -ml-2 block leading-none">
+              {service.num}
+            </span>
+            <div className="flex items-center gap-4 mb-5 -mt-6">
+              <div className={`w-14 h-14 rounded-2xl ${colors.iconBg} flex items-center justify-center border shrink-0`}>
+                <service.icon size={28} className={colors.iconColor} />
+              </div>
+              <h2 className="font-heading text-3xl md:text-5xl font-bold text-text tracking-[-0.02em]">
+                {service.name}
+              </h2>
+            </div>
+            <p className="font-body text-text-muted text-[15px] md:text-[17px] leading-[1.7] mb-8 font-light max-w-[500px]">
+              {service.desc}
+            </p>
+            <div>
+              <p className="font-mono text-[11px] tracking-[0.2em] text-text-muted uppercase mb-4 font-medium">
+                What's Included
+              </p>
+              <ul className="space-y-3">
+                {service.includes.map((item) => (
+                  <li key={item} className="font-body text-[14px] text-text-muted flex items-center gap-4 font-light">
+                    <span className={`w-2 h-2 rounded-full ${colors.dotBg} shrink-0 ${colors.dotGlow}`} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Visual */}
+          <div className="flex-1 w-full relative rounded-2xl overflow-hidden bg-bg-elevated border border-border flex items-center justify-center self-stretch">
+            {service.videoSrc ? (
+              <video
+                src={service.videoSrc}
+                muted
+                playsInline
+                loop
+                autoPlay
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            ) : (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-purple/5" />
+                <service.icon size={120} className={`${colors.iconColor} opacity-10`} />
+              </>
+            )}
+          </div>
+        </div>
+      </motion.div>
+      </div>
+    </div>
   )
 }
 
@@ -201,83 +259,17 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Sticky Cards Scroll Section */}
-      <section className="pb-48 md:pb-64 px-5 sm:px-8 md:px-12 max-w-[1400px] mx-auto relative">
-        <div className="flex flex-col gap-0 pb-[10vh]">
-          {services.map((service, i) => {
-            const colors = colorStyles[service.color]
-            return (
-              <div
-                key={service.num}
-                className="sticky pt-[20px] h-auto min-h-[60vh] w-full flex justify-center"
-                style={{ zIndex: i + 1, top: `${120 + i * 30}px` }}
-              >
-                <motion.div
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.6 }}
-                  className="w-full bg-bg-card border border-border rounded-3xl p-8 md:p-16 shadow-[0_20px_60px_rgba(0,0,0,0.3)] flex flex-col md:flex-row gap-12 md:gap-20 items-center transform transition-all duration-500 hover:-translate-y-2 hover:border-border-hover group"
-                >
-                  {/* Text */}
-                  <div className="flex-1">
-                    <span className="font-mono text-[50px] md:text-[70px] font-bold text-text-dim/20 -ml-2 block leading-none">
-                      {service.num}
-                    </span>
-                    <div className="flex items-center gap-4 mb-6 -mt-6 relative z-10">
-                      <motion.div
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ type: 'spring', stiffness: 400 }}
-                        className={`w-14 h-14 rounded-2xl ${colors.iconBg} flex items-center justify-center border`}
-                      >
-                        <service.icon size={28} className={colors.iconColor} />
-                      </motion.div>
-                      <h2 className="font-heading text-3xl md:text-5xl font-bold text-text tracking-[-0.02em]">
-                        {service.name}
-                      </h2>
-                    </div>
-                    <p className="font-body text-text-muted text-[15px] md:text-[17px] leading-[1.7] mb-10 font-light max-w-[500px]">
-                      {service.desc}
-                    </p>
-                    <div>
-                      <p className="font-mono text-[11px] tracking-[0.2em] text-text-muted uppercase mb-5 font-medium">
-                        What's Included
-                      </p>
-                      <ul className="space-y-4">
-                        {service.includes.map((item) => (
-                          <li
-                            key={item}
-                            className="font-body text-[14px] text-text-muted flex items-center gap-4 font-light"
-                          >
-                            <span
-                              className={`w-2 h-2 rounded-full ${colors.dotBg} shrink-0 ${colors.dotGlow}`}
-                            />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  {/* Visual */}
-                  <div className="flex-1 w-full h-full min-h-[300px] md:min-h-[500px] relative rounded-2xl overflow-hidden bg-bg-elevated border border-border flex items-center justify-center group/visual">
-                    {service.videoSrc ? (
-                      <VideoPlayer src={service.videoSrc} />
-                    ) : (
-                      <>
-                        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-purple/5 group-hover/visual:scale-105 transition-transform duration-700" />
-                        <service.icon
-                          size={120}
-                          className={`${colors.iconColor} opacity-10 group-hover/visual:opacity-30 transition-all duration-500 transform group-hover/visual:scale-110`}
-                        />
-                      </>
-                    )}
-                  </div>
-                </motion.div>
-              </div>
-            )
-          })}
-        </div>
-      </section>
+      {/* Card deck — each card is its own sticky 100vh slot */}
+      <div className="pb-32">
+        {services.map((service, i) => (
+          <ServiceCard
+            key={service.num}
+            service={service}
+            index={i}
+            isLast={i === TOTAL - 1}
+          />
+        ))}
+      </div>
     </motion.main>
   )
 }
