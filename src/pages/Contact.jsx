@@ -48,7 +48,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-heading text-text text-[14px] font-semibold">Email</p>
-                    <p className="font-body text-text-muted text-[13px] font-light">collabcellmedia@gmail.com</p>
+                    <a href="mailto:collabcellmedia@gmail.com" className="font-body text-text-muted text-[13px] font-light hover:text-accent transition-colors">collabcellmedia@gmail.com</a>
                   </div>
                 </div>
                 <div className="flex items-center gap-5">
@@ -57,7 +57,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="font-heading text-text text-[14px] font-semibold">Instagram</p>
-                    <p className="font-body text-text-muted text-[13px] font-light">@collabcellmedia</p>
+                    <a href="https://www.instagram.com/collabcellmedia/" target="_blank" rel="noopener noreferrer" className="font-body text-text-muted text-[13px] font-light hover:text-accent transition-colors">@collabcellmedia</a>
                   </div>
                 </div>
               </div>
