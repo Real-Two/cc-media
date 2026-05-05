@@ -2,12 +2,9 @@ import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 
 const projects = [
-  { brand: 'Himalaya', type: 'Instagram Reels Series', stat: '1.8M+ Views', image: '/brands/himalaya.jpg' },
-  { brand: 'WishCare', type: 'Creator-Brand Partnership', stat: '3.2x ROI', image: '/brands/wishcare.jpg' },
-  { brand: 'BlaBliBlü', type: 'Meta Ad Campaign', stat: '500K+ Impressions', image: '/brands/blabliblu.jpg' },
-  { brand: 'Himalaya', type: 'Storytelling Campaign', stat: '4.1x ROI', image: '/brands/himalaya.jpg' },
-  { brand: 'WishCare', type: 'YouTube Shorts', stat: '1.2M+ Views', image: '/brands/wishcare.jpg' },
-  { brand: 'BlaBliBlü', type: 'Influencer Campaign', stat: '2.5M+ Reach', image: '/brands/blabliblu.jpg' },
+  { brand: 'Himalaya', type: 'Reels & Storytelling Campaign', stat: '1.8M+ Views | 4.1x ROI', image: '/brands/himalaya.jpg' },
+  { brand: 'WishCare', type: 'Creator Partnership & Shorts', stat: '1.2M+ Views | 3.2x ROI', image: '/brands/wishcare.jpg' },
+  { brand: 'BlaBliBlü', type: 'Influencer & Meta Ad Campaign', stat: '2.5M+ Reach | 500K+ Imp.', image: '/brands/blabliblu.jpg' },
 ]
 
 function TiltCard({ children, className }) {
