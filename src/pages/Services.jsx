@@ -16,6 +16,14 @@ import {
   MessageCircle,
   MapPin,
   CheckSquare,
+  Home,
+  LayoutGrid,
+  Gauge,
+  TableProperties,
+  DollarSign,
+  Heart,
+  ThumbsUp,
+  Compass,
 } from 'lucide-react'
 
 const services = [
@@ -236,20 +244,20 @@ const MetaAdsUI = ({ isActive }) => (
       initial={{ x: -40, y: -20, opacity: 0, scale: 0.9 }}
       animate={isActive ? { x: 0, y: 0, opacity: 1, scale: 1 } : { x: -40, y: -20, opacity: 0, scale: 0.9 }}
       transition={{ delay: 0.5, duration: 0.5 }}
-      className="absolute left-[5%] md:left-[12%] top-[15%] md:top-[12%] bg-white rounded-xl shadow-2xl border border-gray-100 z-20 p-4 w-[160px]"
+      className="absolute right-[5%] md:right-[5%] top-[50%] md:top-[45%] bg-white rounded-xl shadow-2xl border border-gray-100 z-20 p-4 w-[140px]"
     >
-      <div className="text-[11px] font-bold text-gray-800 text-center mb-3">Audience Definition</div>
+      <div className="text-[10px] font-bold text-gray-800 text-center mb-3 leading-tight">Audience Definition</div>
       {/* Gauge */}
       <div className="relative w-24 h-12 mx-auto overflow-hidden">
          {/* Colored arc using borders */}
-         <div className="w-24 h-24 rounded-full border-[10px] border-gray-200 absolute top-0 left-0" />
-         <div className="w-24 h-24 rounded-full border-[10px] border-transparent border-t-red-500 border-r-green-500 border-l-yellow-400 rotate-45 absolute top-0 left-0" />
+         <div className="w-24 h-24 rounded-full border-[8px] border-blue-100 absolute top-0 left-0" />
+         <div className="w-24 h-24 rounded-full border-[8px] border-transparent border-t-blue-600 border-r-blue-400 rotate-45 absolute top-0 left-0" />
          
          <motion.div 
             initial={{ rotate: -70 }}
             animate={isActive ? { rotate: 20 } : { rotate: -70 }}
             transition={{ delay: 0.9, type: "spring", stiffness: 80, damping: 12 }}
-            className="absolute bottom-0 left-1/2 w-1 h-10 bg-gray-800 origin-bottom -ml-0.5 rounded-full"
+            className="absolute bottom-0 left-1/2 w-[3px] h-10 bg-gray-800 origin-bottom -ml-[1.5px] rounded-full"
          />
       </div>
       <div className="flex justify-between text-[9px] font-bold text-gray-500 mt-2">
@@ -258,12 +266,74 @@ const MetaAdsUI = ({ isActive }) => (
       </div>
     </motion.div>
 
+    {/* Sidebar Panel */}
+    <motion.div
+      initial={{ x: -20, opacity: 0 }}
+      animate={isActive ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
+      transition={{ delay: 0.4, duration: 0.5 }}
+      className="absolute left-[5%] md:left-[22%] top-[30%] w-10 md:w-12 bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.2)] border border-gray-200 flex flex-col items-center py-4 gap-5 z-20"
+    >
+      <Home size={16} className="text-gray-600" />
+      <LayoutGrid size={16} className="text-gray-600" />
+      <Gauge size={16} className="text-gray-600" />
+      <div className="w-full flex justify-center border-l-[3px] border-blue-600">
+        <TableProperties size={16} className="text-blue-600 -ml-[3px]" />
+      </div>
+    </motion.div>
+
+    {/* Floating Like/Heart Bubble */}
+    <motion.div
+      initial={{ scale: 0, opacity: 0 }}
+      animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+      transition={{ delay: 0.7, type: "spring", stiffness: 120 }}
+      className="absolute left-[25%] md:left-[35%] top-[10%] md:top-[8%] bg-white rounded-full shadow-lg p-2 flex items-center gap-1 z-20"
+    >
+      <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white z-10 shadow-md">
+        <ThumbsUp size={14} fill="currentColor" />
+      </div>
+      <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white -ml-4 z-0 shadow-md">
+        <Heart size={14} fill="currentColor" />
+      </div>
+    </motion.div>
+
+    {/* Floating Dollar Icon */}
+    <motion.div
+      initial={{ scale: 0, opacity: 0 }}
+      animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+      transition={{ delay: 0.8, type: "spring", stiffness: 100 }}
+      className="absolute right-[15%] md:right-[25%] top-[8%] md:top-[5%] w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-[0_10px_25px_rgba(37,99,235,0.5)] text-white z-20"
+    >
+      <div className="w-8 h-8 border-2 border-white rounded-full flex items-center justify-center">
+        <DollarSign size={16} strokeWidth={3} />
+      </div>
+    </motion.div>
+
+    {/* Floating Map/Compass Card */}
+    <motion.div
+      initial={{ y: 30, opacity: 0 }}
+      animate={isActive ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
+      transition={{ delay: 0.9, duration: 0.6 }}
+      className="absolute left-[30%] bottom-[5%] md:bottom-[2%] bg-white rounded-xl shadow-xl border border-gray-100 p-2 w-[120px] h-[100px] z-20 flex flex-col justify-between"
+    >
+      <div className="relative w-full h-full bg-blue-50/50 rounded-lg border border-blue-100/50 overflow-hidden">
+        {/* Dotted path */}
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+           <path d="M 20,80 Q 40,30 80,20" fill="none" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4 4" />
+           <circle cx="20" cy="80" r="4" fill="#3b82f6" />
+           <path d="M 75,15 L 85,25 L 75,35 Z" fill="#3b82f6" transform="rotate(-30 80 20)" />
+        </svg>
+      </div>
+      <div className="absolute -bottom-3 -right-3 w-10 h-10 bg-white rounded-full shadow-lg border border-gray-100 flex items-center justify-center text-gray-700">
+        <Compass size={20} strokeWidth={2} />
+      </div>
+    </motion.div>
+
     {/* Floating Icons */}
     <motion.div
       initial={{ y: 20, opacity: 0 }}
       animate={isActive ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
       transition={{ delay: 0.6, duration: 0.5 }}
-      className="absolute left-[8%] md:left-[15%] bottom-[25%] md:bottom-[20%] w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-[0_10px_25px_rgba(37,99,235,0.5)] text-white z-20"
+      className="absolute left-[8%] md:left-[12%] bottom-[25%] md:bottom-[20%] w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-[0_10px_25px_rgba(37,99,235,0.5)] text-white z-20"
     >
       <MapPin size={28} />
     </motion.div>
@@ -282,7 +352,7 @@ const MetaAdsUI = ({ isActive }) => (
       initial={{ scale: 0, opacity: 0 }}
       animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
       transition={{ delay: 1.1, type: "spring" }}
-      className="absolute left-[20%] bottom-[10%] bg-[#52c41a] text-white font-bold text-sm px-6 py-3 rounded-lg shadow-[0_10px_25px_rgba(82,196,26,0.4)] z-30"
+      className="absolute left-[20%] bottom-[20%] bg-[#52c41a] text-white font-bold text-sm px-6 py-3 rounded-lg shadow-[0_10px_25px_rgba(82,196,26,0.4)] z-30"
     >
       Publish
     </motion.div>
