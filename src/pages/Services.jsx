@@ -68,6 +68,7 @@ const services = [
       'Emotional engagement strategy',
       'Campaign launch & management',
     ],
+    videoSrc: '/services/storytelling-ad-campaigns.mp4',
     color: 'accent',
   },
   {
