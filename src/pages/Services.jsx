@@ -124,9 +124,21 @@ const colorStyles = {
 
 const TOTAL = services.length
 
-function ServiceCard({ service, index, carouselRef }) {
+function ServiceCard({ service, index, isActive, carouselRef }) {
   const cardRef = useRef(null)
+  const videoRef = useRef(null)
   const colors = colorStyles[service.color]
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isActive) {
+        videoRef.current.play().catch(e => console.log('Video play prevented:', e))
+      } else {
+        videoRef.current.pause()
+        videoRef.current.currentTime = 0
+      }
+    }
+  }, [isActive])
 
   // Track this card's position inside the horizontal scroll container
   const { scrollXProgress } = useScroll({
@@ -191,11 +203,11 @@ function ServiceCard({ service, index, carouselRef }) {
         <div className="flex-1 w-full relative rounded-2xl overflow-hidden bg-bg-elevated border border-border flex items-center justify-center self-stretch min-h-[300px]">
           {service.videoSrc ? (
             <video
+              ref={videoRef}
               src={service.videoSrc}
               muted
               playsInline
               loop
-              autoPlay
               className="absolute inset-0 w-full h-full object-cover"
             />
           ) : (
@@ -305,6 +317,7 @@ function CardCarousel() {
             key={service.num} 
             service={service} 
             index={i} 
+            isActive={active === i}
             carouselRef={carouselRef} 
           />
         ))}
