@@ -132,8 +132,13 @@ const colorStyles = {
 const TOTAL = services.length
 
 const MetaAdsUI = ({ isActive }) => (
-  <div className="relative w-full h-full flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden bg-bg-elevated/20 font-sans">
-    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan/10" />
+  <div className="relative w-full h-full flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden font-sans">
+    <div 
+      className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: 'url("/services/background-meta.jpg")' }}
+    />
+    {/* Slight dark overlay so the white UI stands out */}
+    <div className="absolute inset-0 bg-black/10" />
     
     {/* Main Dashboard Window */}
     <motion.div 
