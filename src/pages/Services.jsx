@@ -360,45 +360,227 @@ const MetaAdsUI = ({ isActive }) => (
 )
 
 const InfluencerStrategyUI = ({ isActive }) => (
-  <div className="relative w-full h-full flex items-center justify-center p-8 overflow-hidden bg-bg-elevated/20">
-    <div className="absolute inset-0 bg-gradient-to-br from-purple/5 to-accent/5" />
-    
-    <div className="flex flex-col gap-3 md:gap-4 w-full max-w-[280px] md:max-w-[320px] relative z-10">
-      {[
-        { name: "@creator_one", reach: "1.2M", eng: "8.4%" },
-        { name: "@hype_collab", reach: "850K", eng: "11.2%" },
-        { name: "@trendsetter", reach: "2.4M", eng: "6.1%" },
-      ].map((creator, i) => (
-        <motion.div
-          key={i}
-          initial={{ x: 50, opacity: 0 }}
-          animate={isActive ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }}
-          transition={{ delay: 0.2 + (i * 0.15), duration: 0.5, ease: "easeOut" }}
-          className="bg-bg-card border border-border/50 rounded-xl p-3 md:p-4 flex items-center justify-between shadow-lg backdrop-blur-sm"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-purple/20 border border-purple/30 animate-pulse flex items-center justify-center shrink-0">
-               <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-purple-light" />
-            </div>
-            <div>
-              <div className="text-xs md:text-sm font-medium text-text">{creator.name}</div>
-              <div className="text-[9px] md:text-[10px] text-text-muted font-mono tracking-widest mt-0.5">APPROVED</div>
-            </div>
-          </div>
-          <div className="text-right shrink-0 ml-2">
-            <div className="text-xs md:text-sm font-bold text-text">{creator.reach}</div>
-            <div className="text-[9px] md:text-[10px] text-accent mt-0.5">{creator.eng} ENG</div>
-          </div>
-        </motion.div>
-      ))}
+  <div className="relative w-full h-full flex items-center justify-center p-4 overflow-hidden bg-[#0a0a0a] font-sans text-white">
+    {/* Background Glows */}
+    <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-purple-600/20 blur-[100px] pointer-events-none" />
+    <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-blue-600/20 blur-[100px] pointer-events-none" />
+
+    <div className="relative w-[580px] h-[380px] flex-shrink-0 scale-[0.55] sm:scale-[0.75] md:scale-100 origin-center">
+       
+       {/* SVG Connection Lines */}
+       <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+          <motion.path 
+            initial={{ pathLength: 0 }}
+            animate={isActive ? { pathLength: 1 } : { pathLength: 0 }}
+            transition={{ delay: 0.5, duration: 1 }}
+            d="M 170 100 C 200 100, 200 80, 230 80" 
+            fill="none" stroke="#4f46e5" strokeWidth="1.5" strokeDasharray="3 3" 
+          />
+          <motion.path 
+            initial={{ pathLength: 0 }}
+            animate={isActive ? { pathLength: 1 } : { pathLength: 0 }}
+            transition={{ delay: 0.6, duration: 1 }}
+            d="M 410 80 L 440 80" 
+            fill="none" stroke="#4f46e5" strokeWidth="1.5" strokeDasharray="3 3" 
+          />
+          <motion.path 
+             initial={{ pathLength: 0 }}
+             animate={isActive ? { pathLength: 1 } : { pathLength: 0 }}
+             transition={{ delay: 0.7, duration: 1 }}
+             d="M 490 170 C 490 200, 260 200, 260 230" 
+             fill="none" stroke="#4f46e5" strokeWidth="1.5" strokeDasharray="3 3" 
+          />
+          <motion.path 
+             initial={{ pathLength: 0 }}
+             animate={isActive ? { pathLength: 1 } : { pathLength: 0 }}
+             transition={{ delay: 0.8, duration: 1 }}
+             d="M 440 300 L 460 300" 
+             fill="none" stroke="#4f46e5" strokeWidth="1.5" strokeDasharray="3 3" 
+          />
+          {/* Additional line from third creator card */}
+          <motion.path 
+            initial={{ pathLength: 0 }}
+            animate={isActive ? { pathLength: 1 } : { pathLength: 0 }}
+            transition={{ delay: 0.5, duration: 1 }}
+            d="M 170 160 C 200 160, 200 120, 230 120" 
+            fill="none" stroke="#4f46e5" strokeWidth="1.5" strokeDasharray="3 3" 
+          />
+       </svg>
+
+       {/* Step 1: Creator Discovery (Left) */}
+       <motion.div 
+         initial={{ opacity: 0, x: -20 }}
+         animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+         transition={{ delay: 0.2 }}
+         className="absolute top-[30px] left-[10px] flex flex-col gap-2 w-[160px] z-10"
+       >
+         <div className="flex items-center gap-2 text-[10px] text-gray-300 bg-white/5 border border-white/10 rounded-full px-2 py-1 w-max backdrop-blur-sm">
+           <div className="bg-purple-600 text-white rounded-full w-4 h-4 flex items-center justify-center font-bold text-[8px]">01</div>
+           Creator Discovery
+         </div>
+         <div className="flex flex-col gap-2 relative z-10 mt-1">
+           {[ 
+             { name: "@glowwithsara", cat: "Skincare", eng: "8.2%", color: "bg-purple-600/30 text-purple-200" },
+             { name: "@matt.wellness", cat: "Health & Fitness", eng: "6.7%", color: "bg-blue-600/30 text-blue-200" },
+             { name: "@skinbyluna", cat: "Beauty", eng: "7.1%", color: "bg-indigo-600/30 text-indigo-200" }
+           ].map((c, i) => (
+             <div key={i} className="bg-[#12121a] border border-white/10 rounded-xl p-2 flex items-center gap-2.5 shadow-lg">
+               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 border border-white/20 shrink-0" />
+               <div className="flex flex-col">
+                 <span className="text-[9px] font-bold text-gray-100 flex items-center gap-1">
+                   {c.name} 
+                   <span className="text-blue-400 text-[8px]">★</span>
+                 </span>
+                 <span className="text-[7px] text-gray-400 mt-[1px]">Eng. Rate <span className="text-white font-medium">{c.eng}</span></span>
+                 <span className={`text-[6px] ${c.color} px-1.5 py-0.5 rounded mt-1 w-max`}>{c.cat}</span>
+               </div>
+             </div>
+           ))}
+         </div>
+       </motion.div>
+
+       {/* Step 2: Content & Direction (Middle Top) */}
+       <motion.div 
+         initial={{ opacity: 0, y: -20 }}
+         animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+         transition={{ delay: 0.4 }}
+         className="absolute top-[40px] left-[230px] flex flex-col gap-2 w-[180px] z-10"
+       >
+         <div className="flex items-center gap-2 text-[10px] text-gray-300 bg-white/5 border border-white/10 rounded-full px-2 py-1 w-max backdrop-blur-sm">
+           <div className="bg-blue-600 text-white rounded-full w-4 h-4 flex items-center justify-center font-bold text-[8px]">02</div>
+           Content & Direction
+         </div>
+         <div className="bg-[#12121a] border border-blue-500/30 rounded-xl p-2 flex gap-3 shadow-[0_0_25px_rgba(59,130,246,0.15)] h-[110px] mt-1">
+           <div className="w-[60px] h-full bg-gray-800 rounded-lg relative overflow-hidden shrink-0">
+             <div className="absolute inset-0 bg-gradient-to-tr from-amber-200/20 to-transparent" />
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-black/40 backdrop-blur flex items-center justify-center border border-white/20">
+               <div className="w-0 h-0 border-y-[3px] border-y-transparent border-l-[4px] border-l-white ml-0.5" />
+             </div>
+           </div>
+           <div className="flex flex-col gap-2 justify-center">
+             <span className="text-[9px] font-bold text-gray-100">Content Overview</span>
+             <div className="flex flex-col gap-1.5">
+               {["Hook optimization", "Product integration", "Storytelling angle", "CTA placement"].map((item, i) => (
+                 <div key={i} className="flex items-center gap-1.5">
+                   <div className="w-3 h-3 rounded-full bg-blue-600 flex items-center justify-center text-[7px] text-white">✓</div>
+                   <span className="text-[7px] text-gray-400">{item}</span>
+                 </div>
+               ))}
+             </div>
+           </div>
+         </div>
+       </motion.div>
+
+       {/* Step 3: Campaign Launch (Right Top) */}
+       <motion.div 
+         initial={{ opacity: 0, x: 20 }}
+         animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+         transition={{ delay: 0.6 }}
+         className="absolute top-[40px] left-[440px] flex flex-col gap-2 w-[130px] z-10"
+       >
+         <div className="flex items-center gap-2 text-[10px] text-gray-300 bg-white/5 border border-white/10 rounded-full px-2 py-1 w-max backdrop-blur-sm">
+           <div className="bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center font-bold text-[8px]">03</div>
+           Campaign Launch
+         </div>
+         <div className="bg-[#12121a] border border-white/10 rounded-xl p-3 flex flex-col gap-2 mt-1 shadow-lg">
+           <span className="text-[8px] font-bold text-gray-100">Platforms</span>
+           <div className="flex gap-2">
+             <div className="w-6 h-6 rounded-md bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 flex items-center justify-center">
+               <div className="w-3 h-3 border-2 border-white rounded-[3px] flex items-center justify-center"><div className="w-1 h-1 bg-white rounded-full" /></div>
+             </div>
+             <div className="w-6 h-6 rounded-md bg-black border border-gray-700 flex items-center justify-center text-white text-[10px] font-bold font-serif">♪</div>
+             <div className="w-6 h-6 rounded-md bg-red-600 flex items-center justify-center text-white text-[9px]">▶</div>
+           </div>
+         </div>
+         <div className="bg-[#12121a] border border-white/10 rounded-xl p-3 flex flex-col gap-2 shadow-lg mt-1">
+           <span className="text-[8px] font-bold text-gray-100">Budget Allocation</span>
+           <div className="flex items-center gap-2">
+             <div className="w-8 h-8 rounded-full border-4 border-blue-600 border-r-purple-500 border-b-cyan-400 flex-shrink-0" />
+             <div className="flex flex-col gap-1 text-[6px] text-gray-400">
+               <div className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-purple-500" /> Instagram <span className="text-white">45%</span></div>
+               <div className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-blue-600" /> TikTok <span className="text-white">35%</span></div>
+               <div className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-cyan-400" /> YouTube <span className="text-white">20%</span></div>
+             </div>
+           </div>
+         </div>
+       </motion.div>
+
+       {/* Step 4: Results (Bottom Left/Center) */}
+       <motion.div 
+         initial={{ opacity: 0, y: 20 }}
+         animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+         transition={{ delay: 0.8 }}
+         className="absolute top-[230px] left-[80px] w-[360px] z-10"
+       >
+         <div className="flex items-center gap-2 text-[10px] text-gray-300 bg-white/5 border border-cyan-500/30 rounded-full px-2 py-1 w-max backdrop-blur-sm relative z-10 mb-[-10px] ml-4">
+           <div className="bg-cyan-500 text-white rounded-full w-4 h-4 flex items-center justify-center font-bold text-[8px]">04</div>
+           Results & Optimization
+         </div>
+         <div className="bg-[#12121a] border border-cyan-500/30 rounded-xl p-4 pt-5 shadow-[0_0_30px_rgba(6,182,212,0.15)] relative overflow-hidden">
+           <div className="flex justify-between items-center mb-3">
+             <span className="text-[9px] font-bold text-gray-100">Performance Overview</span>
+             <span className="text-[7px] bg-white/5 border border-white/10 px-2 py-1 rounded text-gray-300">Last 30 Days ▾</span>
+           </div>
+           <div className="grid grid-cols-4 gap-2 mb-4 relative z-10">
+             {[ 
+               { icon: "👁", label: "Total Reach", val: "2.5M+", growth: "+18.6%" },
+               { icon: "👥", label: "Engagement", val: "850K+", growth: "+24.3%" },
+               { icon: "↗", label: "Avg. CTR", val: "4.2%", growth: "+12.7%" },
+               { icon: "$", label: "ROI", val: "3.8x", growth: "+31.4%" },
+             ].map((stat, i) => (
+               <div key={i} className="bg-white/5 rounded-lg p-2 border border-white/5 flex flex-col items-center text-center">
+                 <div className="text-blue-400 text-[10px] mb-1">{stat.icon}</div>
+                 <div className="text-[12px] font-black text-white tracking-tight">{stat.val}</div>
+                 <div className="text-[6px] text-gray-400 mt-1 mb-1">{stat.label}</div>
+                 <div className="text-[7px] text-green-400 font-medium">↑ {stat.growth}</div>
+               </div>
+             ))}
+           </div>
+           
+           {/* Chart line */}
+           <div className="absolute bottom-0 left-0 w-full h-[40px] border-t border-blue-500/10">
+             <div className="absolute bottom-2 right-4 bg-white/5 text-[6px] border border-white/10 rounded px-1.5 py-0.5 z-10 text-gray-300">
+               <span className="text-green-400">↑ 31.4%</span> ROI Increase
+             </div>
+             <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
+               <path d="M0,20 L0,15 Q5,5 10,12 T20,18 T30,10 T40,16 T50,8 T60,15 T70,5 T80,12 T90,8 T100,2 L100,20 Z" fill="rgba(6,182,212,0.1)" />
+               <motion.path 
+                 initial={{ pathLength: 0 }}
+                 animate={isActive ? { pathLength: 1 } : { pathLength: 0 }}
+                 transition={{ delay: 1, duration: 1 }}
+                 d="M0,15 Q5,5 10,12 T20,18 T30,10 T40,16 T50,8 T60,15 T70,5 T80,12 T90,8 T100,2" 
+                 fill="none" stroke="#06b6d4" strokeWidth="1.5" 
+               />
+             </svg>
+           </div>
+         </div>
+       </motion.div>
+
+       {/* Step 5: Campaign ROI (Bottom Right) */}
+       <motion.div 
+         initial={{ opacity: 0, scale: 0.9 }}
+         animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+         transition={{ delay: 1, type: "spring" }}
+         className="absolute top-[245px] left-[460px] w-[110px] bg-[#12121a] border border-purple-500/50 rounded-xl p-3 shadow-[0_0_25px_rgba(168,85,247,0.25)] z-10 overflow-hidden"
+       >
+         <span className="text-[8px] font-bold text-gray-100 block mb-1">Campaign ROI</span>
+         <span className="text-[26px] font-black text-purple-500 leading-none tracking-tighter">3.8x</span>
+         <span className="text-[6px] text-gray-400 block mb-3 mt-1">Return on Investment</span>
+         <div className="h-6 w-full relative mb-1">
+           <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
+               <motion.path 
+                 initial={{ pathLength: 0 }}
+                 animate={isActive ? { pathLength: 1 } : { pathLength: 0 }}
+                 transition={{ delay: 1.2, duration: 1 }}
+                 d="M0,15 Q25,18 50,10 T100,2" 
+                 fill="none" stroke="#a855f7" strokeWidth="1.5" 
+               />
+           </svg>
+         </div>
+         <div className="text-[6px] text-green-400 font-medium">↗ 31.4% vs last campaign</div>
+       </motion.div>
+
     </div>
-    
-    <motion.div 
-       initial={{ scale: 0.8, opacity: 0 }}
-       animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
-       transition={{ delay: 0.5, duration: 1 }}
-       className="absolute w-[300px] h-[300px] md:w-[400px] md:h-[400px] bg-purple/5 rounded-full blur-3xl pointer-events-none"
-    />
   </div>
 )
 
