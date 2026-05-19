@@ -9,6 +9,13 @@ import {
   Handshake,
   ChevronLeft,
   ChevronRight,
+  MousePointer2,
+  Plus,
+  ShoppingBag,
+  Megaphone,
+  MessageCircle,
+  MapPin,
+  CheckSquare,
 } from 'lucide-react'
 
 const services = [
@@ -125,54 +132,154 @@ const colorStyles = {
 const TOTAL = services.length
 
 const MetaAdsUI = ({ isActive }) => (
-  <div className="relative w-full h-full flex flex-col items-center justify-center p-8 overflow-hidden bg-bg-elevated/20">
-    <div className="absolute inset-0 bg-gradient-to-br from-cyan/5 to-purple/5" />
+  <div className="relative w-full h-full flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden bg-bg-elevated/20 font-sans">
+    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan/10" />
     
+    {/* Main Dashboard Window */}
     <motion.div 
-      initial={{ y: 20, opacity: 0 }}
-      animate={isActive ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-      transition={{ delay: 0.2, duration: 0.6 }}
-      className="absolute top-8 left-8 md:top-12 md:left-10 bg-bg-card border border-border/50 rounded-xl p-3 md:p-4 shadow-xl backdrop-blur-md z-10"
+      initial={{ scale: 0.9, opacity: 0, y: 20 }}
+      animate={isActive ? { scale: 1, opacity: 1, y: 0 } : { scale: 0.9, opacity: 0, y: 20 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="w-full max-w-[450px] bg-white rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] overflow-hidden z-10 border border-gray-200 relative"
     >
-      <div className="text-[10px] md:text-[11px] text-text-muted font-mono uppercase tracking-widest mb-1">ROAS</div>
-      <div className="text-xl md:text-2xl font-heading font-bold text-cyan-light">4.2x</div>
-      <div className="text-[10px] md:text-xs text-green-400 mt-1 flex items-center gap-1">
-        <span className="w-1.5 h-1.5 rounded-full bg-green-400" /> +15.4%
+      {/* Tabs */}
+      <div className="flex border-b border-gray-200 bg-gray-50 pt-2 px-2 gap-2">
+        <div className="px-4 py-2 bg-white border-t border-x border-gray-200 rounded-t-lg text-xs font-bold text-blue-600 flex items-center gap-2">
+           <div className="w-4 h-4 bg-blue-600 text-white rounded flex items-center justify-center text-[8px] font-black">
+             <span className="mb-[2px]">^</span>
+           </div>
+           Campaigns
+        </div>
+        <div className="px-4 py-2 text-xs font-bold text-gray-500">Ad Sets</div>
+        <div className="px-4 py-2 text-xs font-bold text-gray-500">Ads</div>
+      </div>
+      
+      {/* Toolbar */}
+      <div className="p-4 border-b border-gray-100 flex items-center gap-3">
+        <div className="px-4 py-2 bg-[#52c41a] text-white rounded text-xs font-bold flex items-center gap-1 shadow-sm">
+          <Plus size={14} strokeWidth={3} /> Create
+        </div>
+        <div className="h-8 w-40 bg-gray-100 rounded-md" />
+      </div>
+
+      {/* Rows */}
+      <div className="p-4 flex flex-col gap-4 min-h-[180px]">
+        {[1, 2, 3].map((row) => (
+          <div key={row} className="flex items-center gap-4">
+            <div className="w-5 h-5 border-2 border-gray-300 rounded-[4px]" />
+            {/* Toggle */}
+            <div className="w-10 h-5 bg-blue-600 rounded-full relative shadow-inner">
+              <div className="absolute right-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm" />
+            </div>
+            <div className="h-3 w-full max-w-[200px] bg-gray-200 rounded-full" />
+          </div>
+        ))}
       </div>
     </motion.div>
 
-    <motion.div 
-      initial={{ y: 20, opacity: 0 }}
-      animate={isActive ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-      transition={{ delay: 0.4, duration: 0.6 }}
-      className="absolute bottom-8 right-8 md:bottom-12 md:right-10 bg-bg-card border border-border/50 rounded-xl p-3 md:p-4 shadow-xl backdrop-blur-md z-10"
+    {/* Floating "New Campaign" Modal */}
+    <motion.div
+      initial={{ x: 50, y: 20, opacity: 0, scale: 0.9 }}
+      animate={isActive ? { x: 0, y: 0, opacity: 1, scale: 1 } : { x: 50, y: 20, opacity: 0, scale: 0.9 }}
+      transition={{ delay: 0.3, duration: 0.5 }}
+      className="absolute right-[2%] md:right-[10%] top-[20%] md:top-[15%] w-[240px] bg-white rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.3)] border border-gray-100 z-30 p-5"
     >
-      <div className="text-[10px] md:text-[11px] text-text-muted font-mono uppercase tracking-widest mb-1">CPA</div>
-      <div className="text-xl md:text-2xl font-heading font-bold text-accent">-$12.40</div>
-      <div className="text-[10px] md:text-xs text-green-400 mt-1 flex items-center gap-1">
-        <span className="w-1.5 h-1.5 rounded-full bg-green-400" /> Optimized
+      <h3 className="text-blue-600 font-bold text-base mb-1">New Campaign</h3>
+      <p className="text-gray-500 text-[11px] mb-4 font-medium">Choose a campaign objective</p>
+      
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-3 text-gray-600">
+          <div className="w-4 h-4 rounded-full border-2 border-gray-300" />
+          <Megaphone size={14} />
+          <span className="text-sm font-medium">Awareness</span>
+        </div>
+        <div className="flex items-center gap-3 text-gray-600">
+          <div className="w-4 h-4 rounded-full border-2 border-gray-300" />
+          <MousePointer2 size={14} />
+          <span className="text-sm font-medium">Traffic</span>
+        </div>
+        <motion.div 
+          animate={isActive ? { backgroundColor: "rgba(37, 99, 235, 0.1)" } : {}}
+          transition={{ delay: 1.2 }}
+          className="flex items-center gap-3 text-blue-700 bg-blue-50/0 p-1.5 -mx-1.5 rounded relative"
+        >
+          <div className="w-4 h-4 rounded-full border-[5px] border-blue-600" />
+          <div className="w-6 h-6 bg-blue-600 text-white rounded-md flex items-center justify-center shadow-md">
+             <ShoppingBag size={14} />
+          </div>
+          <span className="text-sm font-bold">Sales</span>
+          
+          <motion.div 
+            initial={{ x: 100, y: 80, opacity: 0 }}
+            animate={isActive ? { x: 25, y: 15, opacity: 1 } : { x: 100, y: 80, opacity: 0 }}
+            transition={{ delay: 0.6, duration: 0.7, ease: "circOut" }}
+            className="absolute z-50 text-gray-800 drop-shadow-lg right-0 bottom-0 pointer-events-none"
+          >
+            <MousePointer2 size={32} className="fill-gray-800" />
+          </motion.div>
+        </motion.div>
+        <div className="flex items-center gap-3 text-gray-600">
+          <div className="w-4 h-4 rounded-full border-2 border-gray-300" />
+          <MessageCircle size={14} />
+          <span className="text-sm font-medium">Leads</span>
+        </div>
       </div>
     </motion.div>
 
-    <div className="relative w-full max-w-[250px] md:max-w-[300px] h-[120px] md:h-[150px] flex items-end justify-between gap-2 md:gap-3 z-0 mt-8">
-      {[40, 65, 45, 80, 55, 100].map((height, i) => (
-        <motion.div
-          key={i}
-          initial={{ height: 0, opacity: 0 }}
-          animate={isActive ? { height: `${height}%`, opacity: 1 } : { height: 0, opacity: 0 }}
-          transition={{ delay: 0.3 + (i * 0.1), duration: 0.6, ease: "easeOut" }}
-          className="w-full bg-gradient-to-t from-cyan/20 to-cyan border-t-2 border-cyan-light rounded-t-sm"
-        />
-      ))}
-    </div>
-    
-    <motion.div 
-      animate={isActive ? { rotate: 360 } : { rotate: 0 }}
-      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      className="absolute w-[250px] h-[250px] md:w-[300px] md:h-[300px] border border-cyan/10 rounded-full flex items-center justify-center pointer-events-none"
+    {/* Floating Audience Definition */}
+    <motion.div
+      initial={{ x: -40, y: -20, opacity: 0, scale: 0.9 }}
+      animate={isActive ? { x: 0, y: 0, opacity: 1, scale: 1 } : { x: -40, y: -20, opacity: 0, scale: 0.9 }}
+      transition={{ delay: 0.5, duration: 0.5 }}
+      className="absolute left-[5%] md:left-[12%] top-[15%] md:top-[12%] bg-white rounded-xl shadow-2xl border border-gray-100 z-20 p-4 w-[160px]"
     >
-       <div className="w-[350px] md:w-[400px] h-[1px] bg-cyan/10 absolute" />
-       <div className="h-[350px] md:h-[400px] w-[1px] bg-cyan/10 absolute" />
+      <div className="text-[11px] font-bold text-gray-800 text-center mb-3">Audience Definition</div>
+      {/* Gauge */}
+      <div className="relative w-24 h-12 mx-auto overflow-hidden">
+         {/* Colored arc using borders */}
+         <div className="w-24 h-24 rounded-full border-[10px] border-gray-200 absolute top-0 left-0" />
+         <div className="w-24 h-24 rounded-full border-[10px] border-transparent border-t-red-500 border-r-green-500 border-l-yellow-400 rotate-45 absolute top-0 left-0" />
+         
+         <motion.div 
+            initial={{ rotate: -70 }}
+            animate={isActive ? { rotate: 20 } : { rotate: -70 }}
+            transition={{ delay: 0.9, type: "spring", stiffness: 80, damping: 12 }}
+            className="absolute bottom-0 left-1/2 w-1 h-10 bg-gray-800 origin-bottom -ml-0.5 rounded-full"
+         />
+      </div>
+      <div className="flex justify-between text-[9px] font-bold text-gray-500 mt-2">
+        <span>Specific</span>
+        <span>Broad</span>
+      </div>
+    </motion.div>
+
+    {/* Floating Icons */}
+    <motion.div
+      initial={{ y: 20, opacity: 0 }}
+      animate={isActive ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+      transition={{ delay: 0.6, duration: 0.5 }}
+      className="absolute left-[8%] md:left-[15%] bottom-[25%] md:bottom-[20%] w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-[0_10px_25px_rgba(37,99,235,0.5)] text-white z-20"
+    >
+      <MapPin size={28} />
+    </motion.div>
+
+    <motion.div
+      initial={{ y: -20, opacity: 0 }}
+      animate={isActive ? { y: 0, opacity: 1 } : { y: -20, opacity: 0 }}
+      transition={{ delay: 0.7, duration: 0.5 }}
+      className="absolute right-[10%] bottom-[15%] w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-[0_10px_25px_rgba(37,99,235,0.5)] text-white z-20"
+    >
+      <CheckSquare size={28} />
+    </motion.div>
+    
+    {/* Floating Publish Button */}
+    <motion.div
+      initial={{ scale: 0, opacity: 0 }}
+      animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+      transition={{ delay: 1.1, type: "spring" }}
+      className="absolute left-[20%] bottom-[10%] bg-[#52c41a] text-white font-bold text-sm px-6 py-3 rounded-lg shadow-[0_10px_25px_rgba(82,196,26,0.4)] z-30"
+    >
+      Publish
     </motion.div>
   </div>
 )
