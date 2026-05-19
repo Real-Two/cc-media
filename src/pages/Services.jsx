@@ -7,6 +7,8 @@ import {
   Clapperboard,
   LayoutDashboard,
   Handshake,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react'
 
 const services = [
@@ -337,6 +339,44 @@ function CardCarousel() {
       {/* Counter */}
       <div className="absolute top-6 right-8 z-50 font-mono text-[11px] tracking-[0.2em] text-text-dim/40 uppercase pointer-events-none">
         {String(active + 1).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
+      </div>
+
+      {/* Prev/Next Navigation */}
+      <div className="absolute bottom-8 right-5 md:right-12 z-50 flex items-center gap-3">
+        <button
+          onClick={() => {
+            if (active > 0) {
+              carouselRef.current?.scrollTo({
+                left: (active - 1) * window.innerWidth,
+                behavior: 'smooth'
+              })
+            }
+          }}
+          disabled={active === 0}
+          className={`w-12 h-12 rounded-full border border-border bg-bg-elevated/50 backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
+            active === 0 ? 'opacity-30 cursor-not-allowed' : 'opacity-100 hover:bg-bg-elevated hover:scale-105 hover:border-text-dim/30'
+          }`}
+          aria-label="Previous service"
+        >
+          <ChevronLeft size={20} className="text-text" />
+        </button>
+        <button
+          onClick={() => {
+            if (active < TOTAL - 1) {
+              carouselRef.current?.scrollTo({
+                left: (active + 1) * window.innerWidth,
+                behavior: 'smooth'
+              })
+            }
+          }}
+          disabled={active === TOTAL - 1}
+          className={`w-12 h-12 rounded-full border border-border bg-bg-elevated/50 backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
+            active === TOTAL - 1 ? 'opacity-30 cursor-not-allowed' : 'opacity-100 hover:bg-bg-elevated hover:scale-105 hover:border-text-dim/30'
+          }`}
+          aria-label="Next service"
+        >
+          <ChevronRight size={20} className="text-text" />
+        </button>
       </div>
     </div>
   )
