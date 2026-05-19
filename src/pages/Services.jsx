@@ -135,7 +135,7 @@ const MetaAdsUI = ({ isActive }) => (
   <div className="relative w-full h-full flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden font-sans">
     <div 
       className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: 'url("/services/background-meta.jpg")' }}
+      style={{ backgroundImage: 'url("/services/backgroud-meta.jpg")' }}
     />
     {/* Slight dark overlay so the white UI stands out */}
     <div className="absolute inset-0 bg-black/10" />
