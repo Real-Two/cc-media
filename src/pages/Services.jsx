@@ -124,6 +124,161 @@ const colorStyles = {
 
 const TOTAL = services.length
 
+const MetaAdsUI = ({ isActive }) => (
+  <div className="relative w-full h-full flex flex-col items-center justify-center p-8 overflow-hidden bg-bg-elevated/20">
+    <div className="absolute inset-0 bg-gradient-to-br from-cyan/5 to-purple/5" />
+    
+    <motion.div 
+      initial={{ y: 20, opacity: 0 }}
+      animate={isActive ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+      transition={{ delay: 0.2, duration: 0.6 }}
+      className="absolute top-8 left-8 md:top-12 md:left-10 bg-bg-card border border-border/50 rounded-xl p-3 md:p-4 shadow-xl backdrop-blur-md z-10"
+    >
+      <div className="text-[10px] md:text-[11px] text-text-muted font-mono uppercase tracking-widest mb-1">ROAS</div>
+      <div className="text-xl md:text-2xl font-heading font-bold text-cyan-light">4.2x</div>
+      <div className="text-[10px] md:text-xs text-green-400 mt-1 flex items-center gap-1">
+        <span className="w-1.5 h-1.5 rounded-full bg-green-400" /> +15.4%
+      </div>
+    </motion.div>
+
+    <motion.div 
+      initial={{ y: 20, opacity: 0 }}
+      animate={isActive ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+      transition={{ delay: 0.4, duration: 0.6 }}
+      className="absolute bottom-8 right-8 md:bottom-12 md:right-10 bg-bg-card border border-border/50 rounded-xl p-3 md:p-4 shadow-xl backdrop-blur-md z-10"
+    >
+      <div className="text-[10px] md:text-[11px] text-text-muted font-mono uppercase tracking-widest mb-1">CPA</div>
+      <div className="text-xl md:text-2xl font-heading font-bold text-accent">-$12.40</div>
+      <div className="text-[10px] md:text-xs text-green-400 mt-1 flex items-center gap-1">
+        <span className="w-1.5 h-1.5 rounded-full bg-green-400" /> Optimized
+      </div>
+    </motion.div>
+
+    <div className="relative w-full max-w-[250px] md:max-w-[300px] h-[120px] md:h-[150px] flex items-end justify-between gap-2 md:gap-3 z-0 mt-8">
+      {[40, 65, 45, 80, 55, 100].map((height, i) => (
+        <motion.div
+          key={i}
+          initial={{ height: 0, opacity: 0 }}
+          animate={isActive ? { height: `${height}%`, opacity: 1 } : { height: 0, opacity: 0 }}
+          transition={{ delay: 0.3 + (i * 0.1), duration: 0.6, ease: "easeOut" }}
+          className="w-full bg-gradient-to-t from-cyan/20 to-cyan border-t-2 border-cyan-light rounded-t-sm"
+        />
+      ))}
+    </div>
+    
+    <motion.div 
+      animate={isActive ? { rotate: 360 } : { rotate: 0 }}
+      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+      className="absolute w-[250px] h-[250px] md:w-[300px] md:h-[300px] border border-cyan/10 rounded-full flex items-center justify-center pointer-events-none"
+    >
+       <div className="w-[350px] md:w-[400px] h-[1px] bg-cyan/10 absolute" />
+       <div className="h-[350px] md:h-[400px] w-[1px] bg-cyan/10 absolute" />
+    </motion.div>
+  </div>
+)
+
+const InfluencerStrategyUI = ({ isActive }) => (
+  <div className="relative w-full h-full flex items-center justify-center p-8 overflow-hidden bg-bg-elevated/20">
+    <div className="absolute inset-0 bg-gradient-to-br from-purple/5 to-accent/5" />
+    
+    <div className="flex flex-col gap-3 md:gap-4 w-full max-w-[280px] md:max-w-[320px] relative z-10">
+      {[
+        { name: "@creator_one", reach: "1.2M", eng: "8.4%" },
+        { name: "@hype_collab", reach: "850K", eng: "11.2%" },
+        { name: "@trendsetter", reach: "2.4M", eng: "6.1%" },
+      ].map((creator, i) => (
+        <motion.div
+          key={i}
+          initial={{ x: 50, opacity: 0 }}
+          animate={isActive ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }}
+          transition={{ delay: 0.2 + (i * 0.15), duration: 0.5, ease: "easeOut" }}
+          className="bg-bg-card border border-border/50 rounded-xl p-3 md:p-4 flex items-center justify-between shadow-lg backdrop-blur-sm"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-purple/20 border border-purple/30 animate-pulse flex items-center justify-center shrink-0">
+               <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-purple-light" />
+            </div>
+            <div>
+              <div className="text-xs md:text-sm font-medium text-text">{creator.name}</div>
+              <div className="text-[9px] md:text-[10px] text-text-muted font-mono tracking-widest mt-0.5">APPROVED</div>
+            </div>
+          </div>
+          <div className="text-right shrink-0 ml-2">
+            <div className="text-xs md:text-sm font-bold text-text">{creator.reach}</div>
+            <div className="text-[9px] md:text-[10px] text-accent mt-0.5">{creator.eng} ENG</div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+    
+    <motion.div 
+       initial={{ scale: 0.8, opacity: 0 }}
+       animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
+       transition={{ delay: 0.5, duration: 1 }}
+       className="absolute w-[300px] h-[300px] md:w-[400px] md:h-[400px] bg-purple/5 rounded-full blur-3xl pointer-events-none"
+    />
+  </div>
+)
+
+const MatchmakingUI = ({ isActive }) => (
+  <div className="relative w-full h-full flex items-center justify-center p-8 overflow-hidden bg-bg-elevated/20">
+    <div className="absolute inset-0 bg-gradient-to-br from-cyan/5 to-accent/5" />
+    
+    <motion.div 
+      initial={{ scale: 0 }}
+      animate={isActive ? { scale: 1 } : { scale: 0 }}
+      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+      className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-bg-card border border-border/50 shadow-[0_0_30px_rgba(255,107,53,0.3)] z-20 flex items-center justify-center relative"
+    >
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-accent/20 flex items-center justify-center">
+         <div className="w-3 h-3 md:w-4 md:h-4 bg-accent rounded-full animate-ping opacity-75 absolute" />
+         <div className="w-3 h-3 md:w-4 md:h-4 bg-accent rounded-full relative z-10" />
+      </div>
+    </motion.div>
+
+    {[
+      { x: -100, y: -70, size: 12, delay: 0.3 },
+      { x: 120, y: -50, size: 16, delay: 0.4 },
+      { x: -80, y: 90, size: 14, delay: 0.5 },
+      { x: 90, y: 100, size: 10, delay: 0.6 },
+      { x: 0, y: -120, size: 18, delay: 0.7 },
+    ].map((node, i) => (
+      <div key={i} className="absolute top-1/2 left-1/2" style={{ transform: `translate(${node.x}px, ${node.y}px)` }}>
+        <svg className="absolute top-0 left-0 overflow-visible pointer-events-none" style={{ transform: `translate(${-node.x}px, ${-node.y}px)` }}>
+          <motion.line
+            x1={0} y1={0}
+            x2={node.x} y2={node.y}
+            stroke="rgba(6, 182, 212, 0.4)"
+            strokeWidth="1.5"
+            strokeDasharray="4 4"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={isActive ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+            transition={{ delay: node.delay, duration: 0.8 }}
+          />
+        </svg>
+        <motion.div
+          initial={{ scale: 0, opacity: 0 }}
+          animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+          transition={{ delay: node.delay + 0.2, type: "spring" }}
+          className="rounded-full bg-cyan border border-cyan-light shadow-[0_0_15px_rgba(6,182,212,0.5)] z-10 relative"
+          style={{ width: node.size, height: node.size, marginLeft: -node.size/2, marginTop: -node.size/2 }}
+        />
+      </div>
+    ))}
+    
+    <motion.div 
+       animate={isActive ? { rotate: 360 } : { rotate: 0 }}
+       transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+       className="absolute w-[250px] h-[250px] md:w-[300px] md:h-[300px] border border-dashed border-text-dim/10 rounded-full pointer-events-none"
+    />
+    <motion.div 
+       animate={isActive ? { rotate: -360 } : { rotate: 0 }}
+       transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+       className="absolute w-[350px] h-[350px] md:w-[450px] md:h-[450px] border border-text-dim/5 rounded-full pointer-events-none"
+    />
+  </div>
+)
+
 function ServiceCard({ service, index, isActive, carouselRef }) {
   const cardRef = useRef(null)
   const videoRef = useRef(null)
@@ -210,6 +365,12 @@ function ServiceCard({ service, index, isActive, carouselRef }) {
               loop
               className="absolute inset-0 w-full h-full object-cover"
             />
+          ) : service.num === '03' ? (
+            <MetaAdsUI isActive={isActive} />
+          ) : service.num === '05' ? (
+            <InfluencerStrategyUI isActive={isActive} />
+          ) : service.num === '06' ? (
+            <MatchmakingUI isActive={isActive} />
           ) : (
             <>
               <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-purple/5" />
