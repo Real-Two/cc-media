@@ -75,8 +75,10 @@ export default function ContactForm({ defaultType }) {
         setStatus('success')
         return
       }
-      const { error } = await supabase.from('leads').insert([
-        { name: form.name, email: form.email, company: form.company || null, type: form.type, message: form.message },
+      const tableMap = { brand: 'brand_leads', creator: 'creator_leads', other: 'other_leads' }
+      const table = tableMap[form.type] || 'other_leads'
+      const { error } = await supabase.from(table).insert([
+        { name: form.name, email: form.email, company: form.company || null, message: form.message },
       ])
       if (error) throw error
       setStatus('success')
