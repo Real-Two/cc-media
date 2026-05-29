@@ -1,7 +1,17 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, CheckCircle, AlertCircle, Sparkles, Building2, User, Megaphone, ChevronRight } from 'lucide-react'
+import { Send, CheckCircle, AlertCircle, Sparkles, Building2, User, Megaphone, ChevronRight, ChevronDown } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+
+const INDIAN_STATES = [
+  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat',
+  'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh',
+  'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+  'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh',
+  'Uttarakhand', 'West Bengal', 'Andaman and Nicobar Islands', 'Chandigarh',
+  'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Jammu and Kashmir', 'Ladakh',
+  'Lakshadweep', 'Puducherry'
+]
 
 const WHO_OPTIONS = [
   {
@@ -58,6 +68,16 @@ export default function ContactForm({ defaultType }) {
     company: '',
     type: defaultType || 'brand',
     message: '',
+    // Creator fields
+    instaUrl: '',
+    followers: '',
+    youtubeUrl: '',
+    niche: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    pincode: '',
   })
   const [status, setStatus] = useState('idle')
   const [focused, setFocused] = useState(null)
@@ -77,12 +97,49 @@ export default function ContactForm({ defaultType }) {
       }
       const tableMap = { brand: 'brand_leads', creator: 'creator_leads', other: 'other_leads' }
       const table = tableMap[form.type] || 'other_leads'
-      const { error } = await supabase.from(table).insert([
-        { name: form.name, email: form.email, company: form.company || null, message: form.message },
-      ])
+      
+      let payload = {}
+      if (form.type === 'creator') {
+        payload = {
+          name: form.name,
+          insta_url: form.instaUrl,
+          followers: form.followers,
+          youtube_url: form.youtubeUrl || null,
+          niche: form.niche,
+          phone: form.phone,
+          address: form.address,
+          city: form.city,
+          state: form.state,
+          pincode: form.pincode,
+        }
+      } else {
+        payload = {
+          name: form.name,
+          email: form.email,
+          company: form.company || null,
+          message: form.message,
+        }
+      }
+
+      const { error } = await supabase.from(table).insert([payload])
       if (error) throw error
       setStatus('success')
-      setForm({ name: '', email: '', company: '', type: 'brand', message: '' })
+      setForm({
+        name: '',
+        email: '',
+        company: '',
+        type: 'brand',
+        message: '',
+        instaUrl: '',
+        followers: '',
+        youtubeUrl: '',
+        niche: '',
+        phone: '',
+        address: '',
+        city: '',
+        state: '',
+        pincode: '',
+      })
     } catch (err) {
       console.error('Supabase error:', err)
       setStatus('error')
@@ -116,11 +173,17 @@ export default function ContactForm({ defaultType }) {
     )
   }
 
+  // Helper to dynamically match the focus border color to the selected Who type
+  const getFocusBorderClass = (fieldName) => {
+    if (focused !== fieldName) return 'border-border'
+    if (form.type === 'creator') return 'border-cyan'
+    if (form.type === 'other') return 'border-purple'
+    return 'border-accent'
+  }
+
   // ── Field class helper ─────────────────────────────────────────
   const field = (name) =>
-    `w-full bg-transparent border-b-2 ${
-      focused === name ? 'border-accent' : 'border-border'
-    } pt-2 pb-3 text-[15px] text-text placeholder:text-text-dim focus:outline-none transition-colors duration-200 font-body`
+    `w-full bg-transparent border-b-2 ${getFocusBorderClass(name)} pt-2 pb-3 text-[15px] text-text placeholder:text-text-dim focus:outline-none transition-colors duration-200 font-body`
 
   const selectedWho = WHO_OPTIONS.find((o) => o.value === form.type)
   const c = colorMap[selectedWho?.color || 'accent']
@@ -173,84 +236,288 @@ export default function ContactForm({ defaultType }) {
         </div>
       </div>
 
-      {/* Name + Email */}
-      <div>
-        <p className="font-mono text-[10px] tracking-[0.25em] text-text-muted uppercase mb-6 font-medium">
-          02 — Your Details
-        </p>
-        <div className="grid sm:grid-cols-2 gap-x-8 gap-y-8">
-          <div className="flex flex-col gap-1">
-            <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
-              Full Name *
-            </label>
-            <input
-              name="name"
-              type="text"
-              placeholder="Jane Smith"
-              required
-              value={form.name}
-              onChange={handleChange}
-              onFocus={() => setFocused('name')}
-              onBlur={() => setFocused(null)}
-              className={field('name')}
-            />
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
-              Email *
-            </label>
-            <input
-              name="email"
-              type="email"
-              placeholder="jane@brand.com"
-              required
-              value={form.email}
-              onChange={handleChange}
-              onFocus={() => setFocused('email')}
-              onBlur={() => setFocused(null)}
-              className={field('email')}
-            />
-          </div>
-          <div className="flex flex-col gap-1 sm:col-span-2">
-            <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
-              Brand / Company
-            </label>
-            <input
-              name="company"
-              type="text"
-              placeholder="Your brand name (optional)"
-              value={form.company}
-              onChange={handleChange}
-              onFocus={() => setFocused('company')}
-              onBlur={() => setFocused(null)}
-              className={field('company')}
-            />
+      {/* Name + Email (for Brand & Other) OR Creator Details (for Creator) */}
+      {form.type !== 'creator' ? (
+        <div>
+          <p className="font-mono text-[10px] tracking-[0.25em] text-text-muted uppercase mb-6 font-medium">
+            02 — Your Details
+          </p>
+          <div className="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                Full Name *
+              </label>
+              <input
+                name="name"
+                type="text"
+                placeholder="Jane Smith"
+                required
+                value={form.name}
+                onChange={handleChange}
+                onFocus={() => setFocused('name')}
+                onBlur={() => setFocused(null)}
+                className={field('name')}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                Email *
+              </label>
+              <input
+                name="email"
+                type="email"
+                placeholder="jane@brand.com"
+                required
+                value={form.email}
+                onChange={handleChange}
+                onFocus={() => setFocused('email')}
+                onBlur={() => setFocused(null)}
+                className={field('email')}
+              />
+            </div>
+            <div className="flex flex-col gap-1 sm:col-span-2">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                Brand / Company
+              </label>
+              <input
+                name="company"
+                type="text"
+                placeholder="Your brand name (optional)"
+                value={form.company}
+                onChange={handleChange}
+                onFocus={() => setFocused('company')}
+                onBlur={() => setFocused(null)}
+                className={field('company')}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div>
+          <p className="font-mono text-[10px] tracking-[0.25em] text-text-muted uppercase mb-6 font-medium">
+            02 — Creator Profile
+          </p>
+          <div className="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+            
+            {/* Full Name */}
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                Full Name *
+              </label>
+              <input
+                name="name"
+                type="text"
+                placeholder="Jane Smith"
+                required
+                value={form.name}
+                onChange={handleChange}
+                onFocus={() => setFocused('name')}
+                onBlur={() => setFocused(null)}
+                className={field('name')}
+              />
+            </div>
+
+            {/* Phone Number */}
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                Phone Number *
+              </label>
+              <input
+                name="phone"
+                type="tel"
+                placeholder="+91 99999 99999"
+                required
+                value={form.phone}
+                onChange={handleChange}
+                onFocus={() => setFocused('phone')}
+                onBlur={() => setFocused(null)}
+                className={field('phone')}
+              />
+            </div>
+
+            {/* Instagram URL */}
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                Instagram Profile Link *
+              </label>
+              <input
+                name="instaUrl"
+                type="text"
+                placeholder="instagram.com/username"
+                required
+                value={form.instaUrl}
+                onChange={handleChange}
+                onFocus={() => setFocused('instaUrl')}
+                onBlur={() => setFocused(null)}
+                className={field('instaUrl')}
+              />
+            </div>
+
+            {/* Followers */}
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                Follower Count *
+              </label>
+              <input
+                name="followers"
+                type="text"
+                placeholder="e.g. 50K, 1.2M"
+                required
+                value={form.followers}
+                onChange={handleChange}
+                onFocus={() => setFocused('followers')}
+                onBlur={() => setFocused(null)}
+                className={field('followers')}
+              />
+            </div>
+
+            {/* YouTube profile link */}
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                YouTube Profile Link (Optional)
+              </label>
+              <input
+                name="youtubeUrl"
+                type="text"
+                placeholder="youtube.com/@channel"
+                value={form.youtubeUrl}
+                onChange={handleChange}
+                onFocus={() => setFocused('youtubeUrl')}
+                onBlur={() => setFocused(null)}
+                className={field('youtubeUrl')}
+              />
+            </div>
+
+            {/* Niche */}
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                Niche *
+              </label>
+              <input
+                name="niche"
+                type="text"
+                placeholder="e.g. Finance, Tech, Fashion"
+                required
+                value={form.niche}
+                onChange={handleChange}
+                onFocus={() => setFocused('niche')}
+                onBlur={() => setFocused(null)}
+                className={field('niche')}
+              />
+            </div>
+
+            {/* Full Address */}
+            <div className="flex flex-col gap-1 sm:col-span-2">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                Full Address *
+              </label>
+              <input
+                name="address"
+                type="text"
+                placeholder="Street address, Apartment, Suite, Unit"
+                required
+                value={form.address}
+                onChange={handleChange}
+                onFocus={() => setFocused('address')}
+                onBlur={() => setFocused(null)}
+                className={field('address')}
+              />
+            </div>
+
+            {/* City */}
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                City *
+              </label>
+              <input
+                name="city"
+                type="text"
+                placeholder="Mumbai"
+                required
+                value={form.city}
+                onChange={handleChange}
+                onFocus={() => setFocused('city')}
+                onBlur={() => setFocused(null)}
+                className={field('city')}
+              />
+            </div>
+
+            {/* State */}
+            <div className="flex flex-col gap-1 relative">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                State *
+              </label>
+              <div className="relative">
+                <select
+                  name="state"
+                  required
+                  value={form.state}
+                  onChange={handleChange}
+                  onFocus={() => setFocused('state')}
+                  onBlur={() => setFocused(null)}
+                  className={`w-full bg-transparent border-b-2 ${
+                    focused === 'state' ? 'border-cyan' : 'border-border'
+                  } pt-2 pb-3 pr-8 text-[15px] text-text focus:outline-none transition-colors duration-200 font-body cursor-pointer appearance-none`}
+                >
+                  <option value="" disabled className="bg-bg text-text-muted">Select State</option>
+                  {INDIAN_STATES.map((state) => (
+                    <option key={state} value={state} className="bg-bg text-text">
+                      {state}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-0 top-3 pointer-events-none text-text-muted">
+                  <ChevronDown size={16} />
+                </div>
+              </div>
+            </div>
+
+            {/* Pincode */}
+            <div className="flex flex-col gap-1">
+              <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+                Pincode *
+              </label>
+              <input
+                name="pincode"
+                type="text"
+                placeholder="400001"
+                required
+                value={form.pincode}
+                onChange={handleChange}
+                onFocus={() => setFocused('pincode')}
+                onBlur={() => setFocused(null)}
+                className={field('pincode')}
+              />
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* Message */}
-      <div>
-        <p className="font-mono text-[10px] tracking-[0.25em] text-text-muted uppercase mb-6 font-medium">
-          03 — Tell Us More
-        </p>
-        <div className="flex flex-col gap-1">
-          <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
-            Project Details *
-          </label>
-          <textarea
-            name="message"
-            placeholder="What are your goals, timeline, and budget range? The more you share, the better we can help."
-            required
-            rows={4}
-            value={form.message}
-            onChange={handleChange}
-            onFocus={() => setFocused('message')}
-            onBlur={() => setFocused(null)}
-            className={field('message') + ' resize-none'}
-          />
+      {form.type !== 'creator' && (
+        <div>
+          <p className="font-mono text-[10px] tracking-[0.25em] text-text-muted uppercase mb-6 font-medium">
+            03 — Tell Us More
+          </p>
+          <div className="flex flex-col gap-1">
+            <label className="font-mono text-[10px] tracking-[0.18em] text-text-muted/60 uppercase font-medium">
+              Project Details *
+            </label>
+            <textarea
+              name="message"
+              placeholder="What are your goals, timeline, and budget range? The more you share, the better we can help."
+              required
+              rows={4}
+              value={form.message}
+              onChange={handleChange}
+              onFocus={() => setFocused('message')}
+              onBlur={() => setFocused(null)}
+              className={field('message') + ' resize-none'}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Error */}
       <AnimatePresence>
