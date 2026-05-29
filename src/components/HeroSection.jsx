@@ -1,8 +1,116 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
 import RotatingText from './RotatingText'
 import MarqueeTicker from './MarqueeTicker'
+
+const brandCards = [
+  {
+    image: '/brands/himalya.jpg',
+    brand: 'Himalaya',
+    position: 'top-[8%] sm:top-[12%] left-[2%] sm:left-[5%] md:left-[8%]',
+    rotate: -12,
+    scale: 0.85,
+    blurRadius: 1.5,
+    initialOpacity: 0.15,
+    delay: 0,
+    depth: 0.15,
+  },
+  {
+    image: '/brands/wishcare.jpg',
+    brand: 'WishCare',
+    position: 'top-[16%] sm:top-[22%] right-[2%] sm:right-[5%] md:right-[8%]',
+    rotate: 15,
+    scale: 0.9,
+    blurRadius: 1,
+    initialOpacity: 0.2,
+    delay: 1.5,
+    depth: 0.22,
+  },
+  {
+    image: '/brands/blabliblu.jpg',
+    brand: 'BlaBliBlü',
+    position: 'bottom-[25%] sm:bottom-[32%] left-[4%] sm:left-[6%] md:left-[10%]',
+    rotate: 8,
+    scale: 0.95,
+    blurRadius: 0,
+    initialOpacity: 0.25,
+    delay: 0.8,
+    depth: 0.3,
+  },
+  {
+    image: '/brands/philips.jpg',
+    brand: 'Philips',
+    position: 'bottom-[12%] sm:bottom-[18%] right-[4%] sm:right-[8%] md:right-[12%]',
+    rotate: -8,
+    scale: 0.8,
+    blurRadius: 2,
+    initialOpacity: 0.15,
+    delay: 2.2,
+    depth: 0.1,
+  },
+  {
+    image: '/brands/headnshoulders.png',
+    brand: 'Head & Shoulders',
+    position: 'top-[42%] sm:top-[48%] right-[1%] sm:right-[2%] md:right-[4%]',
+    rotate: -15,
+    scale: 0.75,
+    blurRadius: 1.5,
+    initialOpacity: 0.18,
+    delay: 3,
+    depth: 0.18,
+  },
+]
+
+function FloatingBrandCard({ card, mouseX, mouseY }) {
+  const [hovered, setHovered] = useState(false)
+  
+  const x = useTransform(mouseX, (val) => val * card.depth * (hovered ? 120 : 70))
+  const y = useTransform(mouseY, (val) => val * card.depth * (hovered ? 120 : 70))
+
+  return (
+    <motion.div
+      style={{ x, y }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      animate={{
+        y: hovered ? -12 : [0, -8, 0], // floats higher when hovered
+      }}
+      transition={{
+        y: {
+          duration: hovered ? 0.3 : 6,
+          repeat: hovered ? 0 : Infinity,
+          ease: "easeInOut",
+          delay: hovered ? 0 : card.delay,
+        }
+      }}
+      className={`absolute ${card.position} z-[3] pointer-events-auto select-none hidden md:block`}
+    >
+      <motion.div
+        animate={{
+          scale: hovered ? card.scale * 1.12 : card.scale,
+          rotate: hovered ? card.rotate * 0.4 : card.rotate,
+          filter: hovered ? 'blur(0px) grayscale(0%)' : `blur(${card.blurRadius}px) grayscale(100%)`,
+          opacity: hovered ? 0.95 : card.initialOpacity,
+          borderColor: hovered ? 'rgba(6, 182, 212, 0.4)' : 'rgba(255, 255, 255, 0.05)',
+          boxShadow: hovered 
+            ? '0 25px 60px rgba(6, 182, 212, 0.25)' 
+            : '0 15px 35px rgba(0, 0, 0, 0.5)',
+        }}
+        transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+        className="w-[100px] sm:w-[130px] md:w-[190px] aspect-[4/3] rounded-2xl overflow-hidden glass border cursor-pointer relative"
+      >
+        <img
+          src={card.image}
+          alt={card.brand}
+          className="w-full h-full object-cover pointer-events-none"
+        />
+        {/* Soft dark mask when not hovered */}
+        <div className={`absolute inset-0 bg-bg/40 transition-opacity duration-300 pointer-events-none ${hovered ? 'opacity-0' : 'opacity-100'}`} />
+      </motion.div>
+    </motion.div>
+  )
+}
 
 function MagneticButton({ children, className, ...props }) {
   const ref = useRef(null)
@@ -39,6 +147,10 @@ export default function HeroSection() {
   const glowRef = useRef(null)
   const { scrollYProgress } = useScroll()
 
+  // Framer Motion values for mouse position relative to window center
+  const mouseX = useSpring(0, { stiffness: 60, damping: 20 })
+  const mouseY = useSpring(0, { stiffness: 60, damping: 20 })
+
   // Parallax transforms for orbs
   const orbY1 = useTransform(scrollYProgress, [0, 0.3], [0, -80])
   const orbY2 = useTransform(scrollYProgress, [0, 0.3], [0, -50])
@@ -47,7 +159,7 @@ export default function HeroSection() {
   const headlineY = useTransform(scrollYProgress, [0, 0.2], [0, 30])
   const headlineOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0.3])
 
-  // Cursor-following glow effect
+  // Cursor-following glow effect and mouse coordinate tracking
   useEffect(() => {
     const hero = heroRef.current
     const glow = glowRef.current
@@ -55,11 +167,18 @@ export default function HeroSection() {
 
     let rafId = null
     const handleMouseMove = (e) => {
+      const rect = hero.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+
+      // Normalize position to [-0.5, 0.5] range
+      const normX = (e.clientX / window.innerWidth) - 0.5
+      const normY = (e.clientY / window.innerHeight) - 0.5
+      mouseX.set(normX)
+      mouseY.set(normY)
+
       if (rafId) cancelAnimationFrame(rafId)
       rafId = requestAnimationFrame(() => {
-        const rect = hero.getBoundingClientRect()
-        const x = e.clientX - rect.left
-        const y = e.clientY - rect.top
         glow.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(255, 107, 53, 0.07), rgba(124, 58, 237, 0.04), transparent 70%)`
       })
     }
@@ -89,6 +208,16 @@ export default function HeroSection() {
       <motion.div style={{ y: orbY1 }} className="orb orb-teal top-[-10%] left-[-10%]" />
       <motion.div style={{ y: orbY2 }} className="orb orb-purple top-[20%] right-[-5%]" />
       <motion.div style={{ y: orbY3 }} className="orb orb-magenta bottom-[10%] left-[30%]" />
+
+      {/* Floating Holographic Brand Cards */}
+      {brandCards.map((card, idx) => (
+        <FloatingBrandCard
+          key={idx}
+          card={card}
+          mouseX={mouseX}
+          mouseY={mouseY}
+        />
+      ))}
 
       {/* Noise overlay */}
       <div className="noise-overlay absolute inset-0 pointer-events-none z-[2]" />
