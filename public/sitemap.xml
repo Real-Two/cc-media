@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://collabcellmedia.vercel.app/</loc>
+    <loc>https://collabcellmedia.in/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <lastmod>2026-05-29</lastmod>
   </url>
   <url>
-    <loc>https://collabcellmedia.vercel.app/services</loc>
+    <loc>https://collabcellmedia.in/services</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <lastmod>2026-05-29</lastmod>
   </url>
   <url>
-    <loc>https://collabcellmedia.vercel.app/work</loc>
+    <loc>https://collabcellmedia.in/work</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <lastmod>2026-05-29</lastmod>
   </url>
   <url>
-    <loc>https://collabcellmedia.vercel.app/about</loc>
+    <loc>https://collabcellmedia.in/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <lastmod>2026-05-29</lastmod>
   </url>
   <url>
-    <loc>https://collabcellmedia.vercel.app/contact</loc>
+    <loc>https://collabcellmedia.in/contact</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
+    <lastmod>2026-05-29</lastmod>
   </url>
 </urlset>
