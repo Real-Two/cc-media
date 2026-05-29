@@ -12,7 +12,6 @@ const BRANDS = [
   { name: 'Head & Shoulders', logo: '/brands/headnshoulders-logo.png' },
   { name: 'WishCare',         logo: '/brands/wishcare-logo.png' },
   { name: 'BlaBliBlü',        logo: '/brands/blabliblu-logo.png' },
-  { name: 'Expert Panel',     logo: '/brands/expert_panel.jpg' },
 ]
 
 // ─── Infinite Brand Logo Ticker ───────────────────────────────────────────────
