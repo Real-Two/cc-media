@@ -4,84 +4,6 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import RotatingText from './RotatingText'
 import MarqueeTicker from './MarqueeTicker'
 
-// Interactive Showcase Card Component for Brands
-function ShowcaseCard({ brand, stats, logo, themeClass, className }) {
-  const [hovered, setHovered] = useState(false)
-  const [active, setActive] = useState(false)
-
-  const isRevealed = hovered || active
-
-  return (
-    <motion.div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={() => setActive(!active)}
-      whileHover={{ y: -6, scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className={`relative overflow-hidden rounded-3xl border border-white/5 p-6 min-h-[140px] md:min-h-[155px] flex flex-col justify-between cursor-pointer transition-all duration-500 ${themeClass} ${className}`}
-    >
-      {/* Background overlay animations */}
-      {brand === 'WishCare' && <div className="brand-wishcare-glow" />}
-      {brand === 'Philips' && <div className="brand-philips-radar" />}
-      {brand === 'BlaBliBlü' && <div className="brand-blabliblu-glitch" />}
-
-      {/* Card HUD Elements */}
-      <div className="relative z-10 w-full h-full flex flex-col justify-between flex-1">
-        {/* Top Status */}
-        <div className="flex justify-between items-center w-full">
-          <span className="font-mono text-[9px] tracking-widest text-text-muted/40 uppercase font-medium">
-            CASE STUDY
-          </span>
-          <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-            brand === 'Himalaya' ? 'bg-[#2e7d32]' :
-            brand === 'WishCare' ? 'bg-[#e91e63]' :
-            brand === 'Philips' ? 'bg-[#005cbb]' :
-            brand === 'Head & Shoulders' ? 'bg-[#00a3e0]' :
-            'bg-[#a78bfa]'
-          } ${isRevealed ? 'animate-ping scale-150' : 'opacity-60'}`} />
-        </div>
-
-        {/* Center Graphic/Text */}
-        <div className="my-auto py-3">
-          {isRevealed ? (
-            <motion.div
-              initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              transition={{ duration: 0.3 }}
-              className="flex flex-col gap-1"
-            >
-              {stats.split('//').map((part, index) => (
-                <div key={index} className="font-mono font-bold text-xs sm:text-[13px] md:text-sm tracking-wider text-text uppercase">
-                  {part.trim()}
-                </div>
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="flex items-center text-text"
-            >
-              {logo}
-            </motion.div>
-          )}
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="flex justify-between items-center w-full">
-          <span className={`font-mono text-[9px] tracking-wider transition-colors duration-300 font-medium ${isRevealed ? 'text-accent' : 'text-text-muted/40'}`}>
-            {isRevealed ? 'REVEALED' : 'HOVER TO REVEAL'}
-          </span>
-          <svg className={`w-3.5 h-3.5 transition-transform duration-500 ${isRevealed ? 'rotate-45 text-accent' : 'text-text-muted/40'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
 function MagneticButton({ children, className, ...props }) {
   const ref = useRef(null)
   const [pos, setPos] = useState({ x: 0, y: 0 })
@@ -117,13 +39,9 @@ export default function HeroSection() {
   const glowRef = useRef(null)
   const { scrollYProgress } = useScroll()
 
-  // Parallax transforms for orbs
-  const orbY1 = useTransform(scrollYProgress, [0, 0.3], [0, -80])
-  const orbY2 = useTransform(scrollYProgress, [0, 0.3], [0, -50])
-  const orbY3 = useTransform(scrollYProgress, [0, 0.3], [0, -120])
   // Subtle parallax on headline
-  const headlineY = useTransform(scrollYProgress, [0, 0.2], [0, 30])
-  const headlineOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0.3])
+  const headlineY = useTransform(scrollYProgress, [0, 0.25], [0, 40])
+  const headlineOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0.25])
 
   // Cursor-following glow effect
   useEffect(() => {
@@ -138,7 +56,7 @@ export default function HeroSection() {
         const rect = hero.getBoundingClientRect()
         const x = e.clientX - rect.left
         const y = e.clientY - rect.top
-        glow.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(255, 107, 53, 0.07), rgba(124, 58, 237, 0.04), transparent 70%)`
+        glow.style.background = `radial-gradient(600px circle at ${x}px ${y}px, rgba(255, 107, 53, 0.08), rgba(124, 58, 237, 0.05), transparent 70%)`
       })
     }
 
@@ -149,91 +67,30 @@ export default function HeroSection() {
     }
   }, [])
 
-  // Brand Logo Helpers
-  const himalayaLogo = (
-    <div className="flex items-center gap-2.5">
-      <svg className="w-7 h-7 text-[#2e7d32]" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C8.14,18.63 9.62,17.64 11.5,16.89C13,16.29 14.5,16 16,16C18,16 20,17 21,18.5C21.07,15.5 19.5,11.5 17,8M16,14C14.7,14 13.5,14.3 12.3,14.8C10.7,15.5 9.3,16.3 8,17.2C10.5,14 13.25,11.8 17.5,11.2C18.25,12.1 18.5,13.25 18.5,14H16Z" />
-      </svg>
-      <span className="font-heading text-base md:text-lg tracking-wider text-text font-bold">
-        Himalaya
-      </span>
-    </div>
-  )
-
-  const wishcareLogo = (
-    <div className="flex items-center gap-2">
-      <svg className="w-6 h-6 text-[#e91e63]" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
-      </svg>
-      <span className="font-heading text-base md:text-lg tracking-wide text-text font-bold">
-        WishCare
-      </span>
-    </div>
-  )
-
-  const philipsLogo = (
-    <div className="flex items-center gap-2">
-      <svg className="w-5.5 h-5.5 text-[#005cbb]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-      <span className="font-heading text-[13px] md:text-[15px] font-extrabold tracking-[0.2em] text-text">
-        PHILIPS
-      </span>
-    </div>
-  )
-
-  const headShouldersLogo = (
-    <div className="flex items-center gap-2">
-      <svg className="w-6 h-6 text-[#00a3e0]" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12C20,14.5 18.8,16.8 17,18.3C15.8,17 14.1,16 12,16C8.5,16 5.5,18.5 5,21.8C3.1,19.6 2,16.9 2,14C2,8.5 6.5,4 12,4Z" />
-      </svg>
-      <span className="font-body text-[12px] md:text-[13px] font-light lowercase tracking-tighter text-text">
-        head & shoulders
-      </span>
-    </div>
-  )
-
-  const blablibluLogo = (
-    <div className="flex items-center gap-2">
-      <svg className="w-5.5 h-5.5 text-[#a78bfa]" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.7C10,21.9 9.75,22 9,22Z" />
-      </svg>
-      <span className="font-mono text-[12px] md:text-[13px] font-bold tracking-tight text-text">
-        BlaBliBlü
-      </span>
-    </div>
-  )
-
   return (
     <section
       ref={heroRef}
-      className="min-h-screen relative flex flex-col justify-center overflow-hidden"
+      className="min-h-screen relative flex flex-col justify-center overflow-hidden hero-poster-container"
     >
-      {/* Animated gradient background */}
-      <div className="hero-gradient-bg" />
+      {/* Dark readable overlay */}
+      <div className="hero-poster-overlay" />
 
       {/* Cursor-following glow */}
       <div
         ref={glowRef}
-        className="absolute inset-0 pointer-events-none z-[1]"
+        className="absolute inset-0 pointer-events-none z-[2]"
       />
 
-      {/* Parallax Gradient Orbs */}
-      <motion.div style={{ y: orbY1 }} className="orb orb-teal top-[-10%] left-[-10%]" />
-      <motion.div style={{ y: orbY2 }} className="orb orb-purple top-[20%] right-[-5%]" />
-      <motion.div style={{ y: orbY3 }} className="orb orb-magenta bottom-[10%] left-[30%]" />
-
       {/* Noise overlay */}
-      <div className="noise-overlay absolute inset-0 pointer-events-none z-[2]" />
+      <div className="noise-overlay absolute inset-0 pointer-events-none z-[3]" />
 
-      {/* Content wrapper - Split Hero Layout */}
+      {/* Content wrapper - Overlay Layout */}
       <motion.div
         style={{ y: headlineY, opacity: headlineOpacity }}
-        className="relative z-10 max-w-[1600px] w-full mx-auto px-5 sm:px-8 md:px-12 pt-32 pb-16 flex-1 flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-10"
+        className="relative z-10 max-w-[1600px] w-full mx-auto px-5 sm:px-8 md:px-16 pt-32 pb-24 flex-1 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8"
       >
         {/* Left Column: Core Agency Value Pitch */}
-        <div className="w-full lg:w-[52%] flex flex-col items-center lg:items-start text-center lg:text-left">
+        <div className="w-full lg:w-[55%] flex flex-col items-center lg:items-start text-center lg:text-left">
           {/* Tag */}
           <div className="flex items-center gap-2.5 mb-6 px-4 py-1.5 rounded-full glass-subtle border border-white/5">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
@@ -244,11 +101,11 @@ export default function HeroSection() {
 
           {/* Headline */}
           <motion.h1
-            initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+            initial={{ opacity: 0, y: 45, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.7, delay: 0.15 }}
+            transition={{ duration: 0.8, delay: 0.15 }}
             className="font-heading font-extrabold leading-[1.05] mb-8 tracking-[-0.03em] text-text w-full"
-            style={{ fontSize: 'clamp(32px, 8.5vw, 110px)' }}
+            style={{ fontSize: 'clamp(32px, 8vw, 110px)' }}
           >
             We shape{' '}
             <span className="inline-block text-accent">
@@ -260,9 +117,9 @@ export default function HeroSection() {
 
           {/* Subheading */}
           <motion.p
-            initial={{ opacity: 0, y: 30, filter: 'blur(8px)' }}
+            initial={{ opacity: 0, y: 35, filter: 'blur(8px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.6, delay: 0.35 }}
+            transition={{ duration: 0.7, delay: 0.35 }}
             className="font-body text-text-muted text-[15px] md:text-[19px] leading-[1.7] max-w-[620px] mb-12 font-light"
           >
             A cross-functional team bridging the gap between raw creator talent
@@ -295,52 +152,70 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Right Column: Giant Asymmetric Brand Showcase Grid */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 40 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full lg:w-[45%] flex flex-col justify-center items-center"
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-[550px] p-1.5 relative">
-            <ShowcaseCard
-              brand="Himalaya"
-              stats="1.8M+ VIEWS // 4.1x ROI"
-              logo={himalayaLogo}
-              themeClass="brand-himalaya"
-              className="sm:col-span-1"
-            />
-            <ShowcaseCard
-              brand="WishCare"
-              stats="1.2M+ VIEWS // 3.2x ROI"
-              logo={wishcareLogo}
-              themeClass="brand-wishcare"
-              className="sm:col-span-1"
-            />
-            <ShowcaseCard
-              brand="Philips"
-              stats="CREATOR CONTENT // 3.8x SCALE"
-              logo={philipsLogo}
-              themeClass="brand-philips"
-              className="sm:col-span-2"
-            />
-            <ShowcaseCard
-              brand="Head & Shoulders"
-              stats="INFLUENCER CAMPAIGN // 2.1M+ REACH"
-              logo={headShouldersLogo}
-              themeClass="brand-headshoulders"
-              className="sm:col-span-1"
-            />
-            <ShowcaseCard
-              brand="BlaBliBlü"
-              stats="2.5M+ REACH // 500K+ IMP."
-              logo={blablibluLogo}
-              themeClass="brand-blabliblu"
-              className="sm:col-span-1"
-            />
-          </div>
-        </motion.div>
+        {/* Right Column: Floating Interactive HUD Widgets */}
+        <div className="w-full lg:w-[45%] h-[350px] lg:h-[450px] relative flex items-center justify-center">
+          
+          {/* Himalaya Floating Card */}
+          <motion.div
+            initial={{ opacity: 0, x: 60, y: -20 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute top-[5%] right-[5%] sm:right-[10%] w-[240px] glass p-4 rounded-3xl border border-[#2e7d32]/20 shadow-[0_0_35px_rgba(46,125,50,0.15)] animate-float-slow backdrop-blur-md cursor-pointer group"
+            whileHover={{ scale: 1.04, borderColor: 'rgba(46,125,50,0.5)' }}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <svg className="w-5.5 h-5.5 text-[#2e7d32]" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C8.14,18.63 9.62,17.64 11.5,16.89C13,16.29 14.5,16 16,16C18,16 20,17 21,18.5C21.07,15.5 19.5,11.5 17,8M16,14C14.7,14 13.5,14.3 12.3,14.8C10.7,15.5 9.3,16.3 8,17.2C10.5,14 13.25,11.8 17.5,11.2C18.25,12.1 18.5,13.25 18.5,14H16Z" />
+                </svg>
+                <span className="font-heading font-bold text-xs tracking-wider text-text">Himalaya</span>
+              </div>
+              <span className="flex h-1.5 w-1.5 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2e7d32] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#2e7d32]"></span>
+              </span>
+            </div>
+            <div className="font-mono text-[9px] text-text-muted/60 mb-0.5 tracking-wider">VIEWS SECURED</div>
+            <div className="font-mono font-bold text-base tracking-tight text-text">1.8M+ VIEWS</div>
+            <div className="font-mono text-[8px] text-[#2e7d32] mt-1.5 flex justify-between border-t border-white/5 pt-1.5">
+              <span>ROI: 4.1x</span>
+              <span className="opacity-75">INFLUENCER REELS</span>
+            </div>
+          </motion.div>
+
+          {/* WishCare Floating Card */}
+          <motion.div
+            initial={{ opacity: 0, x: -60, y: 20 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute bottom-[10%] left-[5%] sm:left-[10%] w-[240px] glass p-4 rounded-3xl border border-[#e91e63]/20 shadow-[0_0_35px_rgba(233,30,99,0.15)] animate-float-medium backdrop-blur-md cursor-pointer group"
+            whileHover={{ scale: 1.04, borderColor: 'rgba(233,30,99,0.5)' }}
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <svg className="w-5 h-5 text-[#e91e63]" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z" />
+                </svg>
+                <span className="font-heading font-bold text-xs tracking-wider text-text">WishCare</span>
+              </div>
+              <span className="flex h-1.5 w-1.5 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#e91e63] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#e91e63]"></span>
+              </span>
+            </div>
+            <div className="font-mono text-[9px] text-text-muted/60 mb-0.5 tracking-wider">CREATOR MATCHES</div>
+            <div className="font-mono font-bold text-base tracking-tight text-text">1.2M+ REACH</div>
+            <div className="font-mono text-[8px] text-[#e91e63] mt-1.5 flex justify-between border-t border-white/5 pt-1.5">
+              <span>ROI: 3.2x</span>
+              <span className="opacity-75">SHORTS & CAMPAIGNS</span>
+            </div>
+          </motion.div>
+
+        </div>
       </motion.div>
+
+      {/* Bottom overlay mask (smooth fade to dark) */}
+      <div className="hero-poster-mask" />
 
       {/* Marquee */}
       <div className="mt-auto relative z-20">
