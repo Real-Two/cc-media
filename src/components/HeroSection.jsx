@@ -226,8 +226,8 @@ export default function HeroSection() {
         {/* Himalaya Mobile Card - Anchored near the bottom right area of the viewport */}
         <HimalayaCard className="absolute bottom-[24vh] right-[4vw] w-[145px] p-2.5 rounded-2xl z-10" />
         
-        {/* WishCare Mobile Card - Anchored near the middle-left area of the viewport */}
-        <WishCareCard className="absolute bottom-[46vh] left-[4vw] w-[145px] p-2.5 rounded-2xl z-10" />
+        {/* WishCare Mobile Card - Anchored below CTAs on the left */}
+        <WishCareCard className="absolute bottom-[28vh] left-[4vw] w-[145px] p-2.5 rounded-2xl z-10" />
       </div>
 
       {/* Bottom overlay mask (smooth fade to dark) */}
