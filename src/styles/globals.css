@@ -816,6 +816,13 @@ textarea:focus-visible {
   background-repeat: no-repeat;
 }
 
+@media (max-width: 1024px) {
+  .hero-poster-container {
+    background-image: url('/images/hero-poster-mobile.png');
+    background-position: center center;
+  }
+}
+
 .hero-poster-overlay {
   position: absolute;
   inset: 0;
