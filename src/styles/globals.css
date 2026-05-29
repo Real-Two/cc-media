@@ -859,33 +859,39 @@ textarea:focus-visible {
 }
 
 
-/* ─── Brand Logo Ticker Panel ─────────────────────────────────────── */
-.brand-ticker-panel {
+/* ─── Brand Logo Ticker — clean, no glass container ─────────────────── */
+.brand-ticker-root {
   width: 100%;
-  max-width: 480px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border-radius: 20px;
-  padding: 18px 20px 20px;
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,0.03),
-    0 8px 32px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255,255,255,0.06);
+  padding: 0 0 4px;
+}
+
+/* "Trusted By" row with flanking lines */
+.brand-ticker-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 auto 18px;
+  max-width: 340px;
+}
+
+.brand-ticker-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 1px;
 }
 
 .brand-ticker-label {
   font-family: var(--font-mono, monospace);
-  font-size: 9px;
-  letter-spacing: 0.22em;
+  font-size: 10px;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.35);
-  margin: 0 0 14px;
-  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-/* Overflow container with edge fades */
+/* Track wrapper — clips overflow, holds fade edges */
 .brand-ticker-track-wrap {
   position: relative;
   overflow: hidden;
@@ -896,27 +902,29 @@ textarea:focus-visible {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 48px;
+  width: 80px;
   z-index: 2;
   pointer-events: none;
 }
 
 .brand-ticker-fade-left {
   left: 0;
-  background: linear-gradient(to right, rgba(12,12,18,0.85), transparent);
+  background: linear-gradient(to right, rgba(8, 8, 14, 0.9) 0%, transparent 100%);
 }
 
 .brand-ticker-fade-right {
   right: 0;
-  background: linear-gradient(to left, rgba(12,12,18,0.85), transparent);
+  background: linear-gradient(to left, rgba(8, 8, 14, 0.9) 0%, transparent 100%);
 }
 
-/* The scrolling row */
+/* Scrolling row */
 .brand-ticker-track {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  gap: 40px;
   width: max-content;
-  animation: brandTickerScroll 22s linear infinite;
+  padding: 4px 0;
+  animation: brandTickerScroll 28s linear infinite;
   will-change: transform;
 }
 
@@ -926,59 +934,56 @@ textarea:focus-visible {
 
 @keyframes brandTickerScroll {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(-33.333%); }
+  100% { transform: translateX(-25%); }
 }
 
-/* Individual logo slot */
-.brand-ticker-item {
+/* Individual logo — raw image, no card box */
+.brand-ticker-logo {
   flex-shrink: 0;
-  width: 100px;
-  height: 56px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  transition: background 0.25s ease, border-color 0.25s ease;
-}
-
-.brand-ticker-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.14);
-}
-
-.brand-ticker-img {
-  width: 100%;
-  height: 100%;
+  height: 52px;
+  width: auto;
+  max-width: 130px;
   object-fit: contain;
   object-position: center;
-  padding: 8px 10px;
-  filter: brightness(1) contrast(1);
-  transition: filter 0.25s ease;
+  border-radius: 8px;
   user-select: none;
   -webkit-user-drag: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  opacity: 0.9;
 }
 
-/* Mobile: slightly smaller cards */
+.brand-ticker-logo:hover {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+/* Separator dot between logos */
+.brand-ticker-track::after {
+  content: none;
+}
+
+/* Mobile */
 @media (max-width: 1023px) {
-  .brand-ticker-panel {
-    max-width: 100%;
-    padding: 14px 16px 16px;
-    border-radius: 16px;
+  .brand-ticker-header {
+    max-width: 280px;
+    margin-bottom: 14px;
   }
 
-  .brand-ticker-item {
-    width: 84px;
-    height: 48px;
-    border-radius: 10px;
+  .brand-ticker-logo {
+    height: 42px;
+    max-width: 110px;
   }
 
   .brand-ticker-track {
-    gap: 10px;
+    gap: 32px;
+  }
+
+  .brand-ticker-fade-left,
+  .brand-ticker-fade-right {
+    width: 48px;
   }
 }
+
 
 .animate-float-slow {
   animation: floatSlow 6s ease-in-out infinite;
