@@ -99,18 +99,6 @@ export default function HeroSection() {
         className="relative z-10 max-w-[1600px] w-full mx-auto px-5 sm:px-8 md:px-12 pt-36 pb-24 flex-1 flex flex-col justify-center items-center text-center"
       >
         <div className="max-w-[1100px] flex flex-col items-center">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ duration: 0.6, delay: 0 }}
-            className="flex items-center gap-3 mb-12 px-5 py-2.5 rounded-full glass-subtle"
-          >
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <span className="font-mono text-[11px] md:text-[13px] tracking-[0.2em] text-accent uppercase font-medium">
-              Digital Innovation Agency
-            </span>
-          </motion.div>
 
           {/* Headline */}
           <motion.h1

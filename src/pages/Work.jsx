@@ -5,6 +5,8 @@ const projects = [
   { brand: 'Himalaya', type: 'Reels & Storytelling Campaign', stat: '1.8M+ Views | 4.1x ROI', image: '/brands/himalya.jpg' },
   { brand: 'WishCare', type: 'Creator Partnership & Shorts', stat: '1.2M+ Views | 3.2x ROI', image: '/brands/wishcare.jpg' },
   { brand: 'BlaBliBlü', type: 'Influencer & Meta Ad Campaign', stat: '2.5M+ Reach | 500K+ Imp.', image: '/brands/blabliblu.jpg' },
+  { brand: 'Philips', type: 'Brand Campaign & Creator Content', stat: '', image: '/brands/philips.jpg' },
+  { brand: 'Head & Shoulders', type: 'Influencer Partnership', stat: '', image: '/brands/head-and-shoulders.jpg' },
 ]
 
 function TiltCard({ children, className }) {
