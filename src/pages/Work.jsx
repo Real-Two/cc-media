@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles, BookOpen, Users } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 
 const projects = [
   { brand: 'Himalaya', type: 'Reels & Storytelling Campaign', stat: '1.8M+ Views | 4.1x ROI', image: '/brands/himalya.jpg' },
@@ -176,104 +176,46 @@ export default function Work() {
               </div>
             </div>
 
-            {/* Right Side: Sleek Vector Graphic of Expert Panel */}
-            <div className="lg:col-span-7 flex justify-center items-center relative w-full min-h-[480px]">
+            {/* Right Side: Expert Panel Image Representation */}
+            <div className="lg:col-span-7 flex justify-center items-center relative w-full">
               {/* Background ambient glows */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-purple/10 rounded-full blur-[80px] pointer-events-none" />
               <div className="absolute top-1/3 left-1/4 w-[250px] h-[250px] bg-cyan/10 rounded-full blur-[60px] pointer-events-none" />
 
-              <TiltCard className="glass rounded-3xl p-8 w-full max-w-[480px] border border-white/5 relative overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.5)]">
-                {/* Decorative Tech Grid Lines */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-40" />
-
-                {/* Simulated Screen Header */}
-                <div className="flex items-center justify-between border-b border-white/5 pb-4 mb-8 relative z-10">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-cyan shadow-[0_0_8px_rgba(6,182,212,0.8)] animate-pulse" />
-                    <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest">CollabCell IP • Panel System</span>
-                  </div>
-                  <span className="font-mono text-[9px] text-accent font-semibold uppercase tracking-wider bg-accent/10 px-2 py-0.5 rounded">Active Drive</span>
+              <TiltCard className="group glass rounded-3xl overflow-hidden cursor-default w-full max-w-[540px] hover:shadow-[0_30px_70px_rgba(0,0,0,0.5)] transition-shadow duration-300 border border-white/5">
+                <div className="aspect-[4/3] overflow-hidden relative">
+                  <img
+                    src="/brands/expert_panel.jpg"
+                    alt="CollabCell Media Expert Panel"
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-105"
+                    loading="lazy"
+                  />
+                  {/* Subtle Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-bg/95 via-transparent to-transparent pointer-events-none" />
                 </div>
-
-                {/* Central Audio Waveform Graphic */}
-                <div className="flex flex-col items-center justify-center py-6 relative z-10">
-                  {/* Speakers Network */}
-                  <div className="relative w-full h-[220px] flex items-center justify-center">
-                    
-                    {/* Connection lines using SVG */}
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-                      {/* Connection path 1 -> 2 */}
-                      <path d="M 240 40 C 150 40, 150 150, 130 150" fill="none" stroke="rgba(168,85,247,0.15)" strokeWidth="2" strokeDasharray="4 4" />
-                      {/* Connection path 1 -> 3 */}
-                      <path d="M 240 40 C 330 40, 330 150, 350 150" fill="none" stroke="rgba(6,182,212,0.15)" strokeWidth="2" strokeDasharray="4 4" />
-                      {/* Connection path 2 -> 3 */}
-                      <path d="M 130 150 Q 240 190, 350 150" fill="none" stroke="rgba(255,107,53,0.15)" strokeWidth="2" />
-                    </svg>
-
-                    {/* Speaker Node 1 (Top Center) */}
-                    <div className="absolute top-2 flex flex-col items-center">
-                      <div className="w-16 h-16 rounded-full glass border border-purple-light/40 flex items-center justify-center relative shadow-[0_0_20px_rgba(168,85,247,0.2)]">
-                        <Users className="w-6 h-6 text-purple-light" />
-                        {/* Audio pulse ring */}
-                        <span className="absolute inset-0 rounded-full border border-purple-light/30 animate-ping opacity-60" />
-                      </div>
-                      <span className="font-mono text-[9px] text-text-muted mt-2 uppercase tracking-wider">Expert Panelists</span>
-                    </div>
-
-                    {/* Speaker Node 2 (Bottom Left) */}
-                    <div className="absolute bottom-4 left-6 flex flex-col items-center">
-                      <div className="w-14 h-14 rounded-full glass border border-cyan/40 flex items-center justify-center relative shadow-[0_0_15px_rgba(6,182,212,0.15)]">
-                        <BookOpen className="w-5 h-5 text-cyan" />
-                      </div>
-                      <span className="font-mono text-[9px] text-text-muted mt-2 uppercase tracking-wider">Education</span>
-                    </div>
-
-                    {/* Speaker Node 3 (Bottom Right) */}
-                    <div className="absolute bottom-4 right-6 flex flex-col items-center">
-                      <div className="w-14 h-14 rounded-full glass border border-accent/40 flex items-center justify-center relative shadow-[0_0_15px_rgba(255,107,53,0.15)]">
-                        <Sparkles className="w-5 h-5 text-accent" />
-                      </div>
-                      <span className="font-mono text-[9px] text-text-muted mt-2 uppercase tracking-wider">Engagement</span>
-                    </div>
-
-                    {/* Central Glow / Intersection Hub */}
-                    <div className="absolute top-[95px] w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md">
-                      <div className="w-2.5 h-2.5 rounded-full bg-cyan animate-pulse" />
-                    </div>
-
+                
+                {/* Info Footer */}
+                <div className="p-8 space-y-3 bg-bg/90 backdrop-blur-md relative z-10 border-t border-white/5">
+                  <div className="flex justify-between items-center">
+                    <span className="font-mono text-[10px] tracking-[0.15em] text-purple-light uppercase font-semibold">
+                      IP Initiative Case Study
+                    </span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-cyan shadow-[0_0_8px_rgba(6,182,212,0.6)]" />
                   </div>
-                </div>
-
-                {/* Floating Campaign Tags */}
-                <div className="grid grid-cols-2 gap-3 mt-6 relative z-10">
-                  <div className="glass rounded-xl p-3 border border-white/5 flex items-center gap-3">
-                    <span className="w-1.5 h-7 rounded bg-purple-light" />
+                  <h3 className="font-heading text-2xl font-bold text-text tracking-[-0.01em]">
+                    Finance Awareness Panels
+                  </h3>
+                  <div className="flex justify-between items-center pt-3 border-t border-white/5">
                     <div>
-                      <h5 className="font-heading text-xs font-bold text-text">Finance Literacy</h5>
-                      <p className="text-[10px] text-text-muted">Gen-Z Savings & Tax Drives</p>
+                      <p className="font-mono text-[9px] text-text-muted uppercase tracking-wider">Reach Impact</p>
+                      <p className="font-heading text-md font-bold text-text">4.2M+ Views</p>
                     </div>
-                  </div>
-                  <div className="glass rounded-xl p-3 border border-white/5 flex items-center gap-3">
-                    <span className="w-1.5 h-7 rounded bg-cyan" />
-                    <div>
-                      <h5 className="font-heading text-xs font-bold text-text">Organic Reach</h5>
-                      <p className="text-[10px] text-text-muted">Zero promotional pitches</p>
+                    <div className="text-right">
+                      <p className="font-mono text-[9px] text-text-muted uppercase tracking-wider">Viewer Sentiment</p>
+                      <p className="font-heading text-md font-bold text-cyan">98.4% Positive</p>
                     </div>
                   </div>
                 </div>
-
-                {/* Stats Summary Footer */}
-                <div className="mt-6 pt-5 border-t border-white/5 flex justify-between items-center relative z-10">
-                  <div>
-                    <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider">Average Audience</p>
-                    <p className="font-heading text-lg font-bold text-text">4.2M+ Reach</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider">Sentiment Rate</p>
-                    <p className="font-heading text-lg font-bold text-cyan">98.4% Positive</p>
-                  </div>
-                </div>
-
               </TiltCard>
             </div>
 
