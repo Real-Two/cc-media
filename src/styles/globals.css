@@ -694,3 +694,117 @@ textarea:focus-visible {
 .image-reveal {
   animation: imageReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ─── High-Energy Brand Card Animations ─── */
+@keyframes brandMeshGreen {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.brand-himalaya {
+  background: radial-gradient(circle at top left, rgba(46, 125, 50, 0.15), transparent 70%),
+              radial-gradient(circle at bottom right, rgba(16, 44, 18, 0.4), rgba(10, 10, 10, 1) 100%);
+  background-size: 200% 200%;
+}
+.brand-himalaya:hover {
+  animation: brandMeshGreen 4s ease infinite;
+  border-color: rgba(46, 125, 50, 0.5) !important;
+  box-shadow: 0 0 30px rgba(46, 125, 50, 0.25);
+}
+
+@keyframes brandPulsePink {
+  0%, 100% { transform: scale(1); opacity: 0.15; }
+  50% { transform: scale(1.05); opacity: 0.3; }
+}
+.brand-wishcare {
+  background: radial-gradient(circle at top right, rgba(233, 30, 99, 0.15), transparent 70%),
+              radial-gradient(circle at bottom left, rgba(60, 8, 25, 0.4), rgba(10, 10, 10, 1) 100%);
+}
+.brand-wishcare:hover {
+  border-color: rgba(233, 30, 99, 0.5) !important;
+  box-shadow: 0 0 30px rgba(233, 30, 99, 0.25);
+}
+.brand-wishcare-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(233, 30, 99, 0.2) 0%, transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.brand-wishcare:hover .brand-wishcare-glow {
+  opacity: 1;
+  animation: brandPulsePink 2s ease-in-out infinite;
+}
+
+@keyframes brandRadarBlue {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+.brand-philips {
+  background: radial-gradient(circle at top center, rgba(0, 92, 187, 0.15), transparent 70%),
+              radial-gradient(circle at bottom center, rgba(0, 24, 48, 0.4), rgba(10, 10, 10, 1) 100%);
+}
+.brand-philips:hover {
+  border-color: rgba(0, 92, 187, 0.5) !important;
+  box-shadow: 0 0 30px rgba(0, 92, 187, 0.25);
+}
+.brand-philips-radar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 92, 187, 0.8), transparent);
+  pointer-events: none;
+  opacity: 0;
+}
+.brand-philips:hover .brand-philips-radar {
+  opacity: 1;
+  animation: brandRadarBlue 2s linear infinite;
+}
+
+@keyframes brandWaveCyan {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.brand-headshoulders {
+  background: linear-gradient(135deg, rgba(10, 10, 10, 1) 0%, rgba(0, 40, 80, 0.2) 50%, rgba(10, 10, 10, 1) 100%),
+              radial-gradient(circle at bottom right, rgba(0, 163, 224, 0.15), transparent 70%);
+  background-size: 200% 100%;
+}
+.brand-headshoulders:hover {
+  animation: brandWaveCyan 3s linear infinite;
+  border-color: rgba(0, 163, 224, 0.5) !important;
+  box-shadow: 0 0 30px rgba(0, 163, 224, 0.25);
+}
+
+@keyframes brandGlitchPurple {
+  0%, 100% { opacity: 0.1; transform: scale(1) translate(0); }
+  20% { opacity: 0.2; transform: scale(1.02) translate(-2px, 1px); }
+  40% { opacity: 0.15; transform: scale(0.98) translate(1px, -1px); }
+  60% { opacity: 0.25; transform: scale(1.01) translate(-1px, -1px); }
+  80% { opacity: 0.1; transform: scale(1) translate(2px, 2px); }
+}
+.brand-blabliblu {
+  background: radial-gradient(circle at center, rgba(168, 85, 247, 0.12), transparent 70%),
+              radial-gradient(circle at bottom right, rgba(48, 12, 72, 0.4), rgba(10, 10, 10, 1) 100%);
+}
+.brand-blabliblu:hover {
+  border-color: rgba(168, 85, 247, 0.5) !important;
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.25);
+}
+.brand-blabliblu-glitch {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(0deg, rgba(168, 85, 247, 0.05) 0px, rgba(168, 85, 247, 0.05) 1px, transparent 1px, transparent 4px);
+  pointer-events: none;
+  opacity: 0;
+}
+.brand-blabliblu:hover .brand-blabliblu-glitch {
+  opacity: 1;
+  animation: brandGlitchPurple 0.4s steps(2) infinite;
+}
+
