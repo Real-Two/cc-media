@@ -132,7 +132,7 @@ export default function HeroSection() {
   return (
     <section
       ref={heroRef}
-      className="min-h-screen relative flex flex-col justify-center overflow-hidden hero-poster-container"
+      className="min-h-screen relative flex flex-col justify-start lg:justify-center overflow-hidden hero-poster-container"
     >
       {/* Dark readable overlay */}
       <div className="hero-poster-overlay" />
@@ -149,7 +149,7 @@ export default function HeroSection() {
       {/* Content wrapper - Overlay Layout */}
       <motion.div
         style={{ y: headlineY, opacity: headlineOpacity }}
-        className="relative z-10 max-w-[1600px] w-full mx-auto px-5 sm:px-8 md:px-16 pt-32 pb-24 flex-1 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8"
+        className="relative z-10 max-w-[1600px] w-full mx-auto px-5 sm:px-8 md:px-16 pt-36 sm:pt-40 lg:pt-32 pb-24 flex-1 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8"
       >
         {/* Left Column: Core Agency Value Pitch */}
         <div className="w-full lg:w-[55%] flex flex-col items-center lg:items-start text-center lg:text-left">
