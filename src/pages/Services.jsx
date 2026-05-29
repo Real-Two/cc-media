@@ -54,6 +54,7 @@ const services = [
       'Real-time performance tracking',
       'Revenue attribution & reporting',
     ],
+    videoSrc: '/services/affiliate.mp4',
     color: 'cyan',
   },
   {
