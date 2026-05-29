@@ -4,36 +4,37 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import RotatingText from './RotatingText'
 import MarqueeTicker from './MarqueeTicker'
 
-// ─── Brand data ───────────────────────────────────────────────────────────────
+// ─── Brand logos (separate from work-section poster images) ───────────────────
+// Save your clean logo files to /public/brands/ with the -logo suffix
 const BRANDS = [
-  { name: 'Himalaya',         logo: '/brands/himalya.jpg' },
-  { name: 'Philips',          logo: '/brands/philips.jpg' },
-  { name: 'Head & Shoulders', logo: '/brands/headnshoulders.png' },
-  { name: 'WishCare',         logo: '/brands/wishcare.jpg' },
-  { name: 'BlaBliBlü',        logo: '/brands/blabliblu.jpg' },
+  { name: 'Himalaya',         logo: '/brands/himalaya-logo.png' },
+  { name: 'Philips',          logo: '/brands/philips-logo.png' },
+  { name: 'Head & Shoulders', logo: '/brands/headnshoulders-logo.png' },
+  { name: 'WishCare',         logo: '/brands/wishcare-logo.png' },
+  { name: 'BlaBliBlü',        logo: '/brands/blabliblu-logo.png' },
   { name: 'Expert Panel',     logo: '/brands/expert_panel.jpg' },
 ]
 
 // ─── Infinite Brand Logo Ticker ───────────────────────────────────────────────
 function BrandLogoTicker() {
-  // Quadruple-duplicate for a seamless loop with no gaps
+  // Quadruple so the seamless loop never shows a gap
   const items = [...BRANDS, ...BRANDS, ...BRANDS, ...BRANDS]
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.75, ease: [0.16, 1, 0.3, 1] }}
-      className="brand-ticker-root"
+      initial={{ opacity: 0, y: 20, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.9, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="brand-ticker-overlay"
     >
-      {/* "Trusted By" label */}
+      {/* Header */}
       <div className="brand-ticker-header">
         <span className="brand-ticker-line" />
         <span className="brand-ticker-label">Trusted By</span>
         <span className="brand-ticker-line" />
       </div>
 
-      {/* Scrolling track */}
+      {/* Track */}
       <div className="brand-ticker-track-wrap">
         <div className="brand-ticker-fade-left" />
         <div className="brand-ticker-fade-right" />
@@ -97,18 +98,15 @@ export default function HeroSection() {
     const glow = glowRef.current
     if (!hero || !glow) return
     let rafId = null
-    const handleMouseMove = (e) => {
+    const move = (e) => {
       if (rafId) cancelAnimationFrame(rafId)
       rafId = requestAnimationFrame(() => {
-        const rect = hero.getBoundingClientRect()
-        glow.style.background = `radial-gradient(600px circle at ${e.clientX - rect.left}px ${e.clientY - rect.top}px, rgba(255,107,53,0.08), rgba(124,58,237,0.05), transparent 70%)`
+        const r = hero.getBoundingClientRect()
+        glow.style.background = `radial-gradient(600px circle at ${e.clientX - r.left}px ${e.clientY - r.top}px, rgba(255,107,53,0.08), rgba(124,58,237,0.05), transparent 70%)`
       })
     }
-    hero.addEventListener('mousemove', handleMouseMove)
-    return () => {
-      hero.removeEventListener('mousemove', handleMouseMove)
-      if (rafId) cancelAnimationFrame(rafId)
-    }
+    hero.addEventListener('mousemove', move)
+    return () => { hero.removeEventListener('mousemove', move); if (rafId) cancelAnimationFrame(rafId) }
   }, [])
 
   return (
@@ -120,13 +118,13 @@ export default function HeroSection() {
       <div ref={glowRef} className="absolute inset-0 pointer-events-none z-[2]" />
       <div className="noise-overlay absolute inset-0 pointer-events-none z-[3]" />
 
-      {/* ── Copy + CTAs ── */}
+      {/* ── Main content + overlaid ticker ── */}
       <motion.div
-        className="hero-content-pad relative z-10 max-w-[1600px] w-full mx-auto px-5 sm:px-8 md:px-16 lg:pt-32 pb-8 flex-1 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-8"
+        className="hero-content-pad relative z-10 max-w-[1600px] w-full mx-auto px-5 sm:px-8 md:px-16 lg:pt-32 pb-24 flex-1 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-8"
         style={{ y: headlineY, opacity: headlineOpacity }}
       >
-        <div className="w-full lg:w-[60%] flex flex-col items-center lg:items-start text-center lg:text-left">
-          {/* Tag pill */}
+        {/* Left: copy + CTAs */}
+        <div className="w-full lg:w-[55%] flex flex-col items-center lg:items-start text-center lg:text-left">
           <div className="flex items-center gap-2.5 mb-6 px-4 py-1.5 rounded-full glass-subtle border border-white/5">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
             <span className="font-mono text-[10px] md:text-[11px] tracking-[0.25em] text-accent uppercase font-medium">
@@ -134,7 +132,6 @@ export default function HeroSection() {
             </span>
           </div>
 
-          {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 45, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -147,7 +144,6 @@ export default function HeroSection() {
             <br />for modern brands.
           </motion.h1>
 
-          {/* Subheading */}
           <motion.p
             initial={{ opacity: 0, y: 35, filter: 'blur(8px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -158,7 +154,6 @@ export default function HeroSection() {
             and scalable brand growth. No fluff, just results.
           </motion.p>
 
-          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -179,10 +174,15 @@ export default function HeroSection() {
             </MagneticButton>
           </motion.div>
         </div>
+
+        {/* Right: Brand ticker overlay — desktop only (sits in the split layout) */}
+        <div className="hidden lg:flex w-full lg:w-[42%] items-center justify-center">
+          <BrandLogoTicker />
+        </div>
       </motion.div>
 
-      {/* ── Brand Ticker — full width, anchored above marquee ── */}
-      <div className="relative z-10 w-full pb-10 px-0">
+      {/* Mobile ticker — absolute, overlays the lower portion of the poster */}
+      <div className="lg:hidden absolute bottom-[12vh] left-4 right-4 z-10">
         <BrandLogoTicker />
       </div>
 

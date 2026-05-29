@@ -859,25 +859,33 @@ textarea:focus-visible {
 }
 
 
-/* ─── Brand Logo Ticker — clean, no glass container ─────────────────── */
-.brand-ticker-root {
+/* ─── Brand Logo Ticker — glass overlay on hero poster ───────────────── */
+.brand-ticker-overlay {
   width: 100%;
-  padding: 0 0 4px;
+  /* Glass card */
+  background: rgba(10, 10, 16, 0.55);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 20px 24px 22px;
+  box-shadow:
+    0 4px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
 }
 
-/* "Trusted By" row with flanking lines */
+/* "Trusted By" header with flanking lines */
 .brand-ticker-header {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin: 0 auto 18px;
-  max-width: 340px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .brand-ticker-line {
   flex: 1;
   height: 1px;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 1px;
 }
 
@@ -886,45 +894,46 @@ textarea:focus-visible {
   font-size: 10px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.65);
   white-space: nowrap;
   flex-shrink: 0;
 }
 
-/* Track wrapper — clips overflow, holds fade edges */
+/* Track wrapper — clips overflow */
 .brand-ticker-track-wrap {
   position: relative;
   overflow: hidden;
 }
 
+/* Fade edges — match glass bg colour so logos dissolve cleanly */
 .brand-ticker-fade-left,
 .brand-ticker-fade-right {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 80px;
+  width: 56px;
   z-index: 2;
   pointer-events: none;
 }
 
 .brand-ticker-fade-left {
   left: 0;
-  background: linear-gradient(to right, rgba(8, 8, 14, 0.9) 0%, transparent 100%);
+  background: linear-gradient(to right, rgba(10, 10, 16, 0.8), transparent);
 }
 
 .brand-ticker-fade-right {
   right: 0;
-  background: linear-gradient(to left, rgba(8, 8, 14, 0.9) 0%, transparent 100%);
+  background: linear-gradient(to left, rgba(10, 10, 16, 0.8), transparent);
 }
 
 /* Scrolling row */
 .brand-ticker-track {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: 36px;
   width: max-content;
   padding: 4px 0;
-  animation: brandTickerScroll 28s linear infinite;
+  animation: brandTickerScroll 26s linear infinite;
   will-change: transform;
 }
 
@@ -937,50 +946,44 @@ textarea:focus-visible {
   100% { transform: translateX(-25%); }
 }
 
-/* Individual logo — raw image, no card box */
+/* Logo images — big and clear, no card box */
 .brand-ticker-logo {
   flex-shrink: 0;
-  height: 52px;
+  height: 48px;
   width: auto;
-  max-width: 130px;
+  max-width: 120px;
   object-fit: contain;
   object-position: center;
-  border-radius: 8px;
+  border-radius: 6px;
   user-select: none;
   -webkit-user-drag: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  opacity: 0.9;
+  transition: transform 0.25s ease, filter 0.25s ease;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
 }
 
 .brand-ticker-logo:hover {
-  opacity: 1;
-  transform: scale(1.06);
-}
-
-/* Separator dot between logos */
-.brand-ticker-track::after {
-  content: none;
+  transform: scale(1.08);
 }
 
 /* Mobile */
 @media (max-width: 1023px) {
-  .brand-ticker-header {
-    max-width: 280px;
-    margin-bottom: 14px;
+  .brand-ticker-overlay {
+    padding: 16px 18px 18px;
+    border-radius: 16px;
   }
 
   .brand-ticker-logo {
-    height: 42px;
-    max-width: 110px;
+    height: 38px;
+    max-width: 100px;
   }
 
   .brand-ticker-track {
-    gap: 32px;
+    gap: 28px;
   }
 
   .brand-ticker-fade-left,
   .brand-ticker-fade-right {
-    width: 48px;
+    width: 40px;
   }
 }
 
