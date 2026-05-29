@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles, BookOpen, Users, Volume2, MessageSquare, Play } from 'lucide-react'
+import { Sparkles, BookOpen, Users, Volume2, MessageSquare, Play, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const projects = [
   { brand: 'Himalaya', type: 'Reels & Storytelling Campaign', stat: '1.8M+ Views | 4.1x ROI', image: '/brands/himalya.jpg' },
@@ -8,6 +8,30 @@ const projects = [
   { brand: 'BlaBliBlü', type: 'Influencer & Meta Ad Campaign', stat: '2.5M+ Reach | 500K+ Imp.', image: '/brands/blabliblu.jpg' },
   { brand: 'Philips', type: 'Brand Campaign & Creator Content', stat: '', image: '/brands/philips.jpg' },
   { brand: 'Head & Shoulders', type: 'Influencer Partnership', stat: '', image: '/brands/headnshoulders.png' },
+]
+
+const panels = [
+  {
+    video: '/work/panel-1.mp4',
+    name: 'Ankur Warikoo',
+    role: 'Finance Creator & Founder',
+    topic: 'Personal Finance for Gen-Z',
+    color: 'purple-light',
+  },
+  {
+    video: '/work/panel-2.mp4',
+    name: 'Nidhi Nagar',
+    role: 'CA & Tax Strategist',
+    topic: 'Tax Myths Debunked',
+    color: 'cyan',
+  },
+  {
+    video: '/work/panel-3.mp4',
+    name: 'Akshat Shrivastava',
+    role: 'Investment Educator',
+    topic: 'Building Long-Term Wealth',
+    color: 'accent',
+  },
 ]
 
 function TiltCard({ children, className }) {
@@ -40,6 +64,49 @@ function TiltCard({ children, className }) {
 }
 
 export default function Work() {
+  const [activePanel, setActivePanel] = useState(0)
+  const [isInView, setIsInView] = useState(false)
+  const panelSectionRef = useRef(null)
+  const videoRefs = [useRef(null), useRef(null), useRef(null)]
+
+  // IntersectionObserver to play/pause video when entering viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting)
+      },
+      { threshold: 0.1 }
+    )
+    if (panelSectionRef.current) {
+      observer.observe(panelSectionRef.current)
+    }
+    return () => observer.disconnect()
+  }, [])
+
+  // Auto-play the active video and pause others
+  useEffect(() => {
+    videoRefs.forEach((ref, idx) => {
+      const video = ref.current
+      if (!video) return
+      if (idx === activePanel && isInView) {
+        video.play().catch((err) => {
+          // Playback failed or was blocked by auto-play restrictions
+          console.warn('Video playback failed:', err)
+        })
+      } else {
+        video.pause()
+      }
+    })
+  }, [activePanel, isInView])
+
+  const nextPanel = () => {
+    setActivePanel((prev) => (prev + 1) % 3)
+  }
+
+  const prevPanel = () => {
+    setActivePanel((prev) => (prev - 1 + 3) % 3)
+  }
+
   return (
     <motion.main
       initial={{ opacity: 0 }}
@@ -176,92 +243,99 @@ export default function Work() {
               </div>
             </div>
 
-            {/* Right Interactive/Simulation Column */}
-            <div className="lg:col-span-7">
-              <TiltCard className="glass rounded-3xl p-6 md:p-8 relative overflow-hidden border border-white/5 hover:border-purple/20 transition-all duration-500 shadow-[0_30px_70px_rgba(0,0,0,0.5)]">
-                {/* Simulated Screen Header */}
-                <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
-                  <div className="flex items-center gap-3">
-                    <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
-                    <span className="font-mono text-xs text-text-muted uppercase tracking-wider">CC Panel #04 • Personal Finance Special</span>
-                  </div>
-                  <div className="px-3 py-1 rounded-md bg-white/5 font-mono text-[10px] text-text-muted">
-                    12,408 attending
-                  </div>
-                </div>
+            {/* Right Interactive Card Deck Column */}
+            <div ref={panelSectionRef} className="lg:col-span-7 flex flex-col items-center justify-center relative w-full min-h-[500px]">
+              {/* Stack Wrapper */}
+              <div className="relative w-full max-w-[380px] aspect-[3/4] mb-8 select-none">
+                {panels.map((panel, idx) => {
+                  const relativeIndex = (idx - activePanel + 3) % 3
+                  const isTop = relativeIndex === 0
+                  const colorClass = panel.color === 'purple-light' ? 'text-purple-light' : panel.color === 'cyan' ? 'text-cyan' : 'text-accent'
+                  const borderGlow = panel.color === 'purple-light' ? 'shadow-[0_0_25px_rgba(168,85,247,0.15)] border-purple-light/30' : panel.color === 'cyan' ? 'shadow-[0_0_25px_rgba(6,182,212,0.15)] border-cyan/30' : 'shadow-[0_0_25px_rgba(255,107,53,0.15)] border-accent/30'
 
-                {/* Grid of Panelist Tiles */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  
-                  {/* Speaker 1 (Active) */}
-                  <div className="relative aspect-video sm:aspect-square rounded-2xl overflow-hidden glass border-2 border-purple-light/40 shadow-[0_0_15px_rgba(168,85,247,0.15)] flex flex-col justify-end p-4">
-                    <div className="absolute top-3 right-3 bg-purple/80 backdrop-blur-md px-2.5 py-1 rounded-full flex items-center gap-1.5 border border-purple-light/20">
-                      <Volume2 className="w-3.5 h-3.5 text-purple-light animate-bounce" />
-                      <span className="font-mono text-[9px] text-purple-light font-bold uppercase tracking-wider">Speaking</span>
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent z-0" />
-                    <div className="relative z-10">
-                      <p className="font-mono text-[10px] text-purple-light uppercase tracking-wider mb-0.5">Finance Expert</p>
-                      <h4 className="font-heading text-lg font-bold text-text">Ankur W.</h4>
-                      <p className="text-text-muted text-xs">Founder & Author</p>
-                    </div>
-                  </div>
-
-                  {/* Speaker 2 */}
-                  <div className="relative aspect-video sm:aspect-square rounded-2xl overflow-hidden glass border border-white/5 flex flex-col justify-end p-4">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent z-0" />
-                    <div className="relative z-10">
-                      <p className="font-mono text-[10px] text-cyan uppercase tracking-wider mb-0.5">Tax Consultant</p>
-                      <h4 className="font-heading text-lg font-bold text-text">Nidhi P.</h4>
-                      <p className="text-text-muted text-xs">Chartered Accountant</p>
-                    </div>
-                  </div>
-
-                  {/* Speaker 3 */}
-                  <div className="relative aspect-video sm:aspect-square rounded-2xl overflow-hidden glass border border-white/5 flex flex-col justify-end p-4">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent z-0" />
-                    <div className="relative z-10">
-                      <p className="font-mono text-[10px] text-accent uppercase tracking-wider mb-0.5">Investment Lead</p>
-                      <h4 className="font-heading text-lg font-bold text-text">Akshat S.</h4>
-                      <p className="text-text-muted text-xs">Ex-Consultant, Educator</p>
-                    </div>
-                  </div>
-
-                  {/* Stats/Discussion Topic Tile */}
-                  <div className="rounded-2xl glass border border-white/5 flex flex-col justify-between p-6 bg-white/2">
-                    <div>
-                      <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest">Ongoing Topic</span>
-                      <h4 className="font-heading text-xl font-bold text-text mt-2 leading-snug">
-                        Making Finance Approachable for Gen-Z
-                      </h4>
-                    </div>
-                    <div className="space-y-2 mt-4">
-                      <div className="flex justify-between items-center text-xs border-b border-white/5 pb-2">
-                        <span className="text-text-muted">Total Panel Reach</span>
-                        <span className="font-bold text-cyan">4.2M+ Views</span>
+                  return (
+                    <motion.div
+                      key={idx}
+                      style={{ transformOrigin: 'bottom center' }}
+                      animate={{
+                        x: relativeIndex === 0 ? 0 : relativeIndex === 1 ? 16 : -16,
+                        y: relativeIndex === 0 ? 0 : relativeIndex === 1 ? 16 : -12,
+                        scale: relativeIndex === 0 ? 1 : relativeIndex === 1 ? 0.94 : 0.88,
+                        rotate: relativeIndex === 0 ? 0 : relativeIndex === 1 ? 3 : -3,
+                        zIndex: relativeIndex === 0 ? 30 : relativeIndex === 1 ? 20 : 10,
+                        opacity: relativeIndex === 0 ? 1 : relativeIndex === 1 ? 0.85 : 0.3,
+                      }}
+                      transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+                      className={`absolute inset-0 rounded-3xl overflow-hidden glass border ${
+                        isTop ? `border-2 ${borderGlow}` : 'border-white/5'
+                      } shadow-[0_30px_70px_rgba(0,0,0,0.6)] flex flex-col`}
+                    >
+                      {/* Video Container */}
+                      <div className="relative flex-1 bg-black/40 overflow-hidden">
+                        <video
+                          ref={videoRefs[idx]}
+                          src={panel.video}
+                          muted
+                          loop
+                          playsInline
+                          preload="auto"
+                          className="w-full h-full object-cover"
+                        />
+                        {/* Shadow overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-bg/95 via-transparent to-transparent pointer-events-none" />
+                        
+                        {/* Active Muted Tag */}
+                        {isTop && (
+                          <div className="absolute top-4 right-4 bg-bg/85 backdrop-blur-md px-3.5 py-1.5 rounded-full flex items-center gap-2 border border-white/10 shadow-lg">
+                            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                            <span className="font-mono text-[9px] text-text font-bold uppercase tracking-wider">Muted Preview</span>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="text-text-muted">Audience Sentiment</span>
-                        <span className="font-bold text-accent">98.4% Positive</span>
+
+                      {/* Content Panel info */}
+                      <div className="p-6 md:p-8 bg-bg/90 backdrop-blur-md border-t border-white/5 space-y-2 relative z-10">
+                        <span className={`font-mono text-[10px] uppercase tracking-wider font-semibold ${colorClass}`}>
+                          {panel.role}
+                        </span>
+                        <h4 className="font-heading text-xl font-bold text-text">
+                          {panel.name}
+                        </h4>
+                        <p className="text-text-muted text-xs leading-relaxed">
+                          Core Discussion: <span className="text-text font-medium">{panel.topic}</span>
+                        </p>
                       </div>
-                    </div>
-                  </div>
+                    </motion.div>
+                  )
+                })}
+              </div>
 
+              {/* Navigation Controls */}
+              <div className="flex items-center gap-6 z-20">
+                <button
+                  onClick={prevPanel}
+                  className="w-12 h-12 rounded-full glass hover:bg-white/10 transition-all flex items-center justify-center text-text-muted hover:text-text cursor-pointer hover:scale-105 border border-white/5 active:scale-95 shadow-md"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <div className="flex gap-2">
+                  {panels.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setActivePanel(i)}
+                      className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                        i === activePanel ? 'w-6 bg-cyan' : 'w-2 bg-white/20 hover:bg-white/40'
+                      }`}
+                    />
+                  ))}
                 </div>
-
-                {/* Simulated Panel Controls */}
-                <div className="flex justify-center gap-3 mt-6 border-t border-white/10 pt-4">
-                  <div className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-text-muted hover:text-text cursor-pointer">
-                    <Volume2 className="w-4 h-4" />
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-center text-text-muted hover:text-text cursor-pointer">
-                    <MessageSquare className="w-4 h-4" />
-                  </div>
-                  <div className="px-5 py-2 rounded-full bg-gradient-to-r from-purple/50 to-cyan/50 text-text hover:from-purple hover:to-cyan transition-all duration-300 font-mono text-xs font-semibold uppercase tracking-wider cursor-pointer border border-white/10 shadow-[0_0_15px_rgba(6,182,212,0.15)] flex items-center gap-1.5">
-                    <Play className="w-3.5 h-3.5" /> Watch Session
-                  </div>
-                </div>
-              </TiltCard>
+                <button
+                  onClick={nextPanel}
+                  className="w-12 h-12 rounded-full glass hover:bg-white/10 transition-all flex items-center justify-center text-text-muted hover:text-text cursor-pointer hover:scale-105 border border-white/5 active:scale-95 shadow-md"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
           </div>
