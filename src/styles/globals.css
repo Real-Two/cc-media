@@ -858,6 +858,7 @@ textarea:focus-visible {
   50% { transform: translateY(-8px) rotate(-1.5deg); }
 }
 
+
 .animate-float-slow {
   animation: floatSlow 6s ease-in-out infinite;
 }
@@ -866,4 +867,17 @@ textarea:focus-visible {
   animation: floatMedium 5s ease-in-out infinite;
 }
 
+/* ─── Hero Content Safe Padding ─── */
+/* Ensures hero text always clears the fixed navbar on every device/browser */
+.hero-content-pad {
+  /* Navbar (~80px) + safe area (iOS notch) + extra breathing room */
+  padding-top: calc(80px + env(safe-area-inset-top, 0px) + 4rem) !important;
+}
+
+@media (min-width: 1024px) {
+  /* On desktop, let Tailwind's lg:pt-32 handle it — disable the mobile override */
+  .hero-content-pad {
+    padding-top: 8rem !important; /* = pt-32 */
+  }
+}
 
