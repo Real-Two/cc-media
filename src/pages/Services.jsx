@@ -4,7 +4,7 @@ import {
   Film,
   Video,
   Target,
-  Clapperboard,
+
   LayoutDashboard,
   Handshake,
   ChevronLeft,
@@ -43,8 +43,22 @@ const services = [
     color: 'accent',
   },
   {
-    icon: Video,
+    icon: Handshake,
     num: '02',
+    name: 'Affiliate Marketing',
+    desc: 'Performance-driven partnerships that turn creators into revenue channels. We build, manage, and scale affiliate programs that deliver measurable ROI for your brand.',
+    includes: [
+      'Affiliate program setup & management',
+      'Creator recruitment & onboarding',
+      'Commission structure optimization',
+      'Real-time performance tracking',
+      'Revenue attribution & reporting',
+    ],
+    color: 'cyan',
+  },
+  {
+    icon: Video,
+    num: '03',
     name: 'YouTube Shorts',
     desc: "Quick, impactful storytelling that scales your brand presence across the world's largest video platform. Optimised for discovery and engagement.",
     includes: [
@@ -59,7 +73,7 @@ const services = [
   },
   {
     icon: Target,
-    num: '03',
+    num: '04',
     name: 'Meta Ad Campaigns',
     desc: 'Targeted growth that scales — precision advertising backed by data, creativity, and real-time optimisation across Facebook and Instagram.',
     includes: [
@@ -70,21 +84,6 @@ const services = [
       'Conversion tracking & reporting',
     ],
     color: 'cyan',
-  },
-  {
-    icon: Clapperboard,
-    num: '04',
-    name: 'Storytelling Ad Campaigns',
-    desc: 'Cinematic content that converts. We craft narratives that make audiences feel, remember, and act — from concept to final cut.',
-    includes: [
-      'Brand narrative development',
-      'Cinematic production',
-      'Multi-platform adaptation',
-      'Emotional engagement strategy',
-      'Campaign launch & management',
-    ],
-    videoSrc: '/services/storytelling-ad-campaigns.mp4',
-    color: 'accent',
   },
   {
     icon: LayoutDashboard,
@@ -99,20 +98,6 @@ const services = [
       'ROI measurement & reporting',
     ],
     color: 'purple',
-  },
-  {
-    icon: Handshake,
-    num: '06',
-    name: 'Creator-Brand Matchmaking',
-    desc: "Connecting the right talent to the right brand. Every match is intentional, every result is measurable. Our network spans 1 lakh+ creators.",
-    includes: [
-      'Creator database access',
-      'Brand alignment scoring',
-      'Collaboration proposals',
-      'Relationship management',
-      'Long-term partnership building',
-    ],
-    color: 'cyan',
   },
 ]
 
@@ -584,64 +569,6 @@ const InfluencerStrategyUI = ({ isActive }) => (
   </div>
 )
 
-const MatchmakingUI = ({ isActive }) => (
-  <div className="relative w-full h-full flex items-center justify-center p-8 overflow-hidden bg-bg-elevated/20">
-    <div className="absolute inset-0 bg-gradient-to-br from-cyan/5 to-accent/5" />
-    
-    <motion.div 
-      initial={{ scale: 0 }}
-      animate={isActive ? { scale: 1 } : { scale: 0 }}
-      transition={{ type: "spring", stiffness: 200, damping: 20 }}
-      className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-bg-card border border-border/50 shadow-[0_0_30px_rgba(255,107,53,0.3)] z-20 flex items-center justify-center relative"
-    >
-      <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-accent/20 flex items-center justify-center">
-         <div className="w-3 h-3 md:w-4 md:h-4 bg-accent rounded-full animate-ping opacity-75 absolute" />
-         <div className="w-3 h-3 md:w-4 md:h-4 bg-accent rounded-full relative z-10" />
-      </div>
-    </motion.div>
-
-    {[
-      { x: -100, y: -70, size: 12, delay: 0.3 },
-      { x: 120, y: -50, size: 16, delay: 0.4 },
-      { x: -80, y: 90, size: 14, delay: 0.5 },
-      { x: 90, y: 100, size: 10, delay: 0.6 },
-      { x: 0, y: -120, size: 18, delay: 0.7 },
-    ].map((node, i) => (
-      <div key={i} className="absolute top-1/2 left-1/2" style={{ transform: `translate(${node.x}px, ${node.y}px)` }}>
-        <svg className="absolute top-0 left-0 overflow-visible pointer-events-none" style={{ transform: `translate(${-node.x}px, ${-node.y}px)` }}>
-          <motion.line
-            x1={0} y1={0}
-            x2={node.x} y2={node.y}
-            stroke="rgba(6, 182, 212, 0.4)"
-            strokeWidth="1.5"
-            strokeDasharray="4 4"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={isActive ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-            transition={{ delay: node.delay, duration: 0.8 }}
-          />
-        </svg>
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-          transition={{ delay: node.delay + 0.2, type: "spring" }}
-          className="rounded-full bg-cyan border border-cyan-light shadow-[0_0_15px_rgba(6,182,212,0.5)] z-10 relative"
-          style={{ width: node.size, height: node.size, marginLeft: -node.size/2, marginTop: -node.size/2 }}
-        />
-      </div>
-    ))}
-    
-    <motion.div 
-       animate={isActive ? { rotate: 360 } : { rotate: 0 }}
-       transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-       className="absolute w-[250px] h-[250px] md:w-[300px] md:h-[300px] border border-dashed border-text-dim/10 rounded-full pointer-events-none"
-    />
-    <motion.div 
-       animate={isActive ? { rotate: -360 } : { rotate: 0 }}
-       transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-       className="absolute w-[350px] h-[350px] md:w-[450px] md:h-[450px] border border-text-dim/5 rounded-full pointer-events-none"
-    />
-  </div>
-)
 
 function ServiceCard({ service, index, isActive, carouselRef }) {
   const cardRef = useRef(null)
@@ -729,12 +656,11 @@ function ServiceCard({ service, index, isActive, carouselRef }) {
               loop
               className="absolute inset-0 w-full h-full object-cover"
             />
-          ) : service.num === '03' ? (
+          ) : service.num === '04' ? (
             <MetaAdsUI isActive={isActive} />
           ) : service.num === '05' ? (
             <InfluencerStrategyUI isActive={isActive} />
-          ) : service.num === '06' ? (
-            <MatchmakingUI isActive={isActive} />
+
           ) : (
             <>
               <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-purple/5" />
