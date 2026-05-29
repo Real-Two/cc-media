@@ -1,6 +1,6 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles, BookOpen, Users, Volume2, MessageSquare, Play, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Sparkles, BookOpen, Users } from 'lucide-react'
 
 const projects = [
   { brand: 'Himalaya', type: 'Reels & Storytelling Campaign', stat: '1.8M+ Views | 4.1x ROI', image: '/brands/himalya.jpg' },
@@ -8,30 +8,6 @@ const projects = [
   { brand: 'BlaBliBlü', type: 'Influencer & Meta Ad Campaign', stat: '2.5M+ Reach | 500K+ Imp.', image: '/brands/blabliblu.jpg' },
   { brand: 'Philips', type: 'Brand Campaign & Creator Content', stat: '', image: '/brands/philips.jpg' },
   { brand: 'Head & Shoulders', type: 'Influencer Partnership', stat: '', image: '/brands/headnshoulders.png' },
-]
-
-const panels = [
-  {
-    video: '/work/panel-1.mp4',
-    name: 'Ankur Warikoo',
-    role: 'Finance Creator & Founder',
-    topic: 'Personal Finance for Gen-Z',
-    color: 'purple-light',
-  },
-  {
-    video: '/work/panel-2.mp4',
-    name: 'Nidhi Nagar',
-    role: 'CA & Tax Strategist',
-    topic: 'Tax Myths Debunked',
-    color: 'cyan',
-  },
-  {
-    video: '/work/panel-3.mp4',
-    name: 'Akshat Shrivastava',
-    role: 'Investment Educator',
-    topic: 'Building Long-Term Wealth',
-    color: 'accent',
-  },
 ]
 
 function TiltCard({ children, className }) {
@@ -64,49 +40,6 @@ function TiltCard({ children, className }) {
 }
 
 export default function Work() {
-  const [activePanel, setActivePanel] = useState(0)
-  const [isInView, setIsInView] = useState(false)
-  const panelSectionRef = useRef(null)
-  const videoRefs = [useRef(null), useRef(null), useRef(null)]
-
-  // IntersectionObserver to play/pause video when entering viewport
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsInView(entry.isIntersecting)
-      },
-      { threshold: 0.1 }
-    )
-    if (panelSectionRef.current) {
-      observer.observe(panelSectionRef.current)
-    }
-    return () => observer.disconnect()
-  }, [])
-
-  // Auto-play the active video and pause others
-  useEffect(() => {
-    videoRefs.forEach((ref, idx) => {
-      const video = ref.current
-      if (!video) return
-      if (idx === activePanel && isInView) {
-        video.play().catch((err) => {
-          // Playback failed or was blocked by auto-play restrictions
-          console.warn('Video playback failed:', err)
-        })
-      } else {
-        video.pause()
-      }
-    })
-  }, [activePanel, isInView])
-
-  const nextPanel = () => {
-    setActivePanel((prev) => (prev + 1) % 3)
-  }
-
-  const prevPanel = () => {
-    setActivePanel((prev) => (prev - 1 + 3) % 3)
-  }
-
   return (
     <motion.main
       initial={{ opacity: 0 }}
@@ -243,99 +176,105 @@ export default function Work() {
               </div>
             </div>
 
-            {/* Right Interactive Card Deck Column */}
-            <div ref={panelSectionRef} className="lg:col-span-7 flex flex-col items-center justify-center relative w-full min-h-[500px]">
-              {/* Stack Wrapper */}
-              <div className="relative w-full max-w-[380px] aspect-[3/4] mb-8 select-none">
-                {panels.map((panel, idx) => {
-                  const relativeIndex = (idx - activePanel + 3) % 3
-                  const isTop = relativeIndex === 0
-                  const colorClass = panel.color === 'purple-light' ? 'text-purple-light' : panel.color === 'cyan' ? 'text-cyan' : 'text-accent'
-                  const borderGlow = panel.color === 'purple-light' ? 'shadow-[0_0_25px_rgba(168,85,247,0.15)] border-purple-light/30' : panel.color === 'cyan' ? 'shadow-[0_0_25px_rgba(6,182,212,0.15)] border-cyan/30' : 'shadow-[0_0_25px_rgba(255,107,53,0.15)] border-accent/30'
+            {/* Right Side: Sleek Vector Graphic of Expert Panel */}
+            <div className="lg:col-span-7 flex justify-center items-center relative w-full min-h-[480px]">
+              {/* Background ambient glows */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-purple/10 rounded-full blur-[80px] pointer-events-none" />
+              <div className="absolute top-1/3 left-1/4 w-[250px] h-[250px] bg-cyan/10 rounded-full blur-[60px] pointer-events-none" />
 
-                  return (
-                    <motion.div
-                      key={idx}
-                      style={{ transformOrigin: 'bottom center' }}
-                      animate={{
-                        x: relativeIndex === 0 ? 0 : relativeIndex === 1 ? 16 : -16,
-                        y: relativeIndex === 0 ? 0 : relativeIndex === 1 ? 16 : -12,
-                        scale: relativeIndex === 0 ? 1 : relativeIndex === 1 ? 0.94 : 0.88,
-                        rotate: relativeIndex === 0 ? 0 : relativeIndex === 1 ? 3 : -3,
-                        zIndex: relativeIndex === 0 ? 30 : relativeIndex === 1 ? 20 : 10,
-                        opacity: relativeIndex === 0 ? 1 : relativeIndex === 1 ? 0.85 : 0.3,
-                      }}
-                      transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-                      className={`absolute inset-0 rounded-3xl overflow-hidden glass border ${
-                        isTop ? `border-2 ${borderGlow}` : 'border-white/5'
-                      } shadow-[0_30px_70px_rgba(0,0,0,0.6)] flex flex-col`}
-                    >
-                      {/* Video Container */}
-                      <div className="relative flex-1 bg-black/40 overflow-hidden">
-                        <video
-                          ref={videoRefs[idx]}
-                          src={panel.video}
-                          muted
-                          loop
-                          playsInline
-                          preload="auto"
-                          className="w-full h-full object-cover"
-                        />
-                        {/* Shadow overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-bg/95 via-transparent to-transparent pointer-events-none" />
-                        
-                        {/* Active Muted Tag */}
-                        {isTop && (
-                          <div className="absolute top-4 right-4 bg-bg/85 backdrop-blur-md px-3.5 py-1.5 rounded-full flex items-center gap-2 border border-white/10 shadow-lg">
-                            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                            <span className="font-mono text-[9px] text-text font-bold uppercase tracking-wider">Muted Preview</span>
-                          </div>
-                        )}
-                      </div>
+              <TiltCard className="glass rounded-3xl p-8 w-full max-w-[480px] border border-white/5 relative overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.5)]">
+                {/* Decorative Tech Grid Lines */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-40" />
 
-                      {/* Content Panel info */}
-                      <div className="p-6 md:p-8 bg-bg/90 backdrop-blur-md border-t border-white/5 space-y-2 relative z-10">
-                        <span className={`font-mono text-[10px] uppercase tracking-wider font-semibold ${colorClass}`}>
-                          {panel.role}
-                        </span>
-                        <h4 className="font-heading text-xl font-bold text-text">
-                          {panel.name}
-                        </h4>
-                        <p className="text-text-muted text-xs leading-relaxed">
-                          Core Discussion: <span className="text-text font-medium">{panel.topic}</span>
-                        </p>
-                      </div>
-                    </motion.div>
-                  )
-                })}
-              </div>
-
-              {/* Navigation Controls */}
-              <div className="flex items-center gap-6 z-20">
-                <button
-                  onClick={prevPanel}
-                  className="w-12 h-12 rounded-full glass hover:bg-white/10 transition-all flex items-center justify-center text-text-muted hover:text-text cursor-pointer hover:scale-105 border border-white/5 active:scale-95 shadow-md"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <div className="flex gap-2">
-                  {panels.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActivePanel(i)}
-                      className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                        i === activePanel ? 'w-6 bg-cyan' : 'w-2 bg-white/20 hover:bg-white/40'
-                      }`}
-                    />
-                  ))}
+                {/* Simulated Screen Header */}
+                <div className="flex items-center justify-between border-b border-white/5 pb-4 mb-8 relative z-10">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-cyan shadow-[0_0_8px_rgba(6,182,212,0.8)] animate-pulse" />
+                    <span className="font-mono text-[10px] text-text-muted uppercase tracking-widest">CollabCell IP • Panel System</span>
+                  </div>
+                  <span className="font-mono text-[9px] text-accent font-semibold uppercase tracking-wider bg-accent/10 px-2 py-0.5 rounded">Active Drive</span>
                 </div>
-                <button
-                  onClick={nextPanel}
-                  className="w-12 h-12 rounded-full glass hover:bg-white/10 transition-all flex items-center justify-center text-text-muted hover:text-text cursor-pointer hover:scale-105 border border-white/5 active:scale-95 shadow-md"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
+
+                {/* Central Audio Waveform Graphic */}
+                <div className="flex flex-col items-center justify-center py-6 relative z-10">
+                  {/* Speakers Network */}
+                  <div className="relative w-full h-[220px] flex items-center justify-center">
+                    
+                    {/* Connection lines using SVG */}
+                    <svg className="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                      {/* Connection path 1 -> 2 */}
+                      <path d="M 240 40 C 150 40, 150 150, 130 150" fill="none" stroke="rgba(168,85,247,0.15)" strokeWidth="2" strokeDasharray="4 4" />
+                      {/* Connection path 1 -> 3 */}
+                      <path d="M 240 40 C 330 40, 330 150, 350 150" fill="none" stroke="rgba(6,182,212,0.15)" strokeWidth="2" strokeDasharray="4 4" />
+                      {/* Connection path 2 -> 3 */}
+                      <path d="M 130 150 Q 240 190, 350 150" fill="none" stroke="rgba(255,107,53,0.15)" strokeWidth="2" />
+                    </svg>
+
+                    {/* Speaker Node 1 (Top Center) */}
+                    <div className="absolute top-2 flex flex-col items-center">
+                      <div className="w-16 h-16 rounded-full glass border border-purple-light/40 flex items-center justify-center relative shadow-[0_0_20px_rgba(168,85,247,0.2)]">
+                        <Users className="w-6 h-6 text-purple-light" />
+                        {/* Audio pulse ring */}
+                        <span className="absolute inset-0 rounded-full border border-purple-light/30 animate-ping opacity-60" />
+                      </div>
+                      <span className="font-mono text-[9px] text-text-muted mt-2 uppercase tracking-wider">Expert Panelists</span>
+                    </div>
+
+                    {/* Speaker Node 2 (Bottom Left) */}
+                    <div className="absolute bottom-4 left-6 flex flex-col items-center">
+                      <div className="w-14 h-14 rounded-full glass border border-cyan/40 flex items-center justify-center relative shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+                        <BookOpen className="w-5 h-5 text-cyan" />
+                      </div>
+                      <span className="font-mono text-[9px] text-text-muted mt-2 uppercase tracking-wider">Education</span>
+                    </div>
+
+                    {/* Speaker Node 3 (Bottom Right) */}
+                    <div className="absolute bottom-4 right-6 flex flex-col items-center">
+                      <div className="w-14 h-14 rounded-full glass border border-accent/40 flex items-center justify-center relative shadow-[0_0_15px_rgba(255,107,53,0.15)]">
+                        <Sparkles className="w-5 h-5 text-accent" />
+                      </div>
+                      <span className="font-mono text-[9px] text-text-muted mt-2 uppercase tracking-wider">Engagement</span>
+                    </div>
+
+                    {/* Central Glow / Intersection Hub */}
+                    <div className="absolute top-[95px] w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md">
+                      <div className="w-2.5 h-2.5 rounded-full bg-cyan animate-pulse" />
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Floating Campaign Tags */}
+                <div className="grid grid-cols-2 gap-3 mt-6 relative z-10">
+                  <div className="glass rounded-xl p-3 border border-white/5 flex items-center gap-3">
+                    <span className="w-1.5 h-7 rounded bg-purple-light" />
+                    <div>
+                      <h5 className="font-heading text-xs font-bold text-text">Finance Literacy</h5>
+                      <p className="text-[10px] text-text-muted">Gen-Z Savings & Tax Drives</p>
+                    </div>
+                  </div>
+                  <div className="glass rounded-xl p-3 border border-white/5 flex items-center gap-3">
+                    <span className="w-1.5 h-7 rounded bg-cyan" />
+                    <div>
+                      <h5 className="font-heading text-xs font-bold text-text">Organic Reach</h5>
+                      <p className="text-[10px] text-text-muted">Zero promotional pitches</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stats Summary Footer */}
+                <div className="mt-6 pt-5 border-t border-white/5 flex justify-between items-center relative z-10">
+                  <div>
+                    <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider">Average Audience</p>
+                    <p className="font-heading text-lg font-bold text-text">4.2M+ Reach</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider">Sentiment Rate</p>
+                    <p className="font-heading text-lg font-bold text-cyan">98.4% Positive</p>
+                  </div>
+                </div>
+
+              </TiltCard>
             </div>
 
           </div>
