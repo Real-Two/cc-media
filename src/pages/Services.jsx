@@ -98,6 +98,7 @@ const services = [
       'Content approval workflows',
       'ROI measurement & reporting',
     ],
+    videoSrc: '/services/storytelling-ad-campaigns.mp4',
     color: 'purple',
   },
 ]
